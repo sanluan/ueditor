@@ -3,13 +3,6 @@
 ###############
 .idea
 log
-jsp/upload
-php/upload
-net/upload
-asp/upload
-node/upload
-
-
 ###############
 #  fixed file #
 ###############
@@ -18,19 +11,9 @@ node/upload
 *.docx
 *.xml
 
-
-
-
-
-
-
-
-
-
 #################
 ## Eclipse
 #################
-
 *.pydevproject
 .project
 .metadata

@@ -44,6 +44,12 @@
                     holder.onresize = null;
                     textarea = null;
                     holder = null;
+                },
+                focus: function (){
+                    textarea.focus();
+                },
+                blur: function (){
+                    textarea.blur();
                 }
             };
         },
@@ -76,6 +82,15 @@
                     holder.removeChild(dom);
                     dom = null;
                     codeEditor = null;
+                },
+                focus: function (){
+                    codeEditor.focus();
+                },
+                blur: function (){
+                    // codeEditor.blur();
+                    // since codemirror not support blur()
+                    codeEditor.setOption('readOnly', true);
+                    codeEditor.setOption('readOnly', false);
                 }
             };
         }
@@ -87,6 +102,8 @@
         var sourceMode = false;
         var sourceEditor;
         var orgSetContent;
+        var orgFocus;
+        var orgBlur;
         opt.sourceEditor = browser.ie  ? 'textarea' : (opt.sourceEditor || 'codemirror');
 
         me.setOpt({
@@ -193,6 +210,18 @@
                     me.getContent = function (){
                         return sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
                     };
+                    
+                    orgFocus = me.focus;
+                    orgBlur = me.blur;
+            
+                    me.focus = function(){
+                        sourceEditor.focus();
+                    };
+            
+                    me.blur = function(){
+                        orgBlur.call(me);
+                        sourceEditor.blur();
+                    };
                 } else {
                     me.iframe.style.cssText = bakCssText;
                     var cont = sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
@@ -211,13 +240,16 @@
                     sourceEditor = null;
                     //还原getContent方法
                     me.getContent = oldGetContent;
+                    
+                    me.focus = orgFocus;
+                    me.blur = orgBlur;
+
                     var first = me.body.firstChild;
                     //trace:1106 都删除空了，下边会报错，所以补充一个p占位
                     if(!first){
                         me.body.innerHTML = '<p>'+(browser.ie?'':'<br/>')+'</p>';
                         first = me.body.firstChild;
                     }
-
 
                     //要在ifm为显示时ff才能取到selection,否则报错
                     //这里不能比较位置了

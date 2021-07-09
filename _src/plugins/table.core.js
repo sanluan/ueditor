@@ -100,8 +100,8 @@
         //在table或者td边缘有可能存在选中tr的情况
         var cell = start && domUtils.findParentByTagName(start, ["td", "th"], true),
             tr = cell && cell.parentNode,
-            caption = start && domUtils.findParentByTagName(start, 'caption', true),
-            table = caption ? caption.parentNode : tr && tr.parentNode.parentNode;
+            table = tr && domUtils.findParentByTagName(tr, ["table"]),
+            caption = table && table.getElementsByTagName('caption')[0];
 
         return {
             cell:cell,
@@ -719,12 +719,14 @@
             var range = this.cellsRange,
                 leftTopCell = this.getCell(range.beginRowIndex, this.indexTable[range.beginRowIndex][range.beginColIndex].cellIndex);
 
-            if (leftTopCell.tagName == "TH" && range.endRowIndex !== range.beginRowIndex) {
-                var index = this.indexTable,
-                    info = this.getCellInfo(leftTopCell);
-                leftTopCell = this.getCell(1, index[1][info.colIndex].cellIndex);
-                range = this.getCellsRange(leftTopCell, this.getCell(index[this.rowsNum - 1][info.colIndex].rowIndex, index[this.rowsNum - 1][info.colIndex].cellIndex));
-            }
+            // 这段关于行表头或者列表头的特殊处理会导致表头合并范围错误
+            // 为什么有这段代码的原因未明，暂且注释掉，希望原作者看到后出面说明下
+            //if (leftTopCell.tagName == "TH" && range.endRowIndex !== range.beginRowIndex) {
+            //    var index = this.indexTable,
+            //        info = this.getCellInfo(leftTopCell);
+            //    leftTopCell = this.getCell(1, index[1][info.colIndex].cellIndex);
+            //    range = this.getCellsRange(leftTopCell, this.getCell(index[this.rowsNum - 1][info.colIndex].rowIndex, index[this.rowsNum - 1][info.colIndex].cellIndex));
+            //}
 
             // 删除剩余的Cells
             var cells = this.getCells(range);
@@ -767,6 +769,7 @@
             var numCols = this.colsNum,
                 table = this.table,
                 row = table.insertRow(rowIndex), cell,
+                thead = null,
                 isInsertTitle = typeof sourceCell == 'string' && sourceCell.toUpperCase() == 'TH';
 
             function replaceTdToTh(colIndex, cell, tableRow) {
@@ -797,6 +800,10 @@
                     cell.getAttribute('vAlign') && cell.setAttribute('vAlign', cell.getAttribute('vAlign'));
                     row.appendChild(cell);
                     if(!isInsertTitle) replaceTdToTh(colIndex, cell, row);
+                }
+                if(isInsertTitle) {
+                    thead = table.createTHead();
+                    thead.insertBefore(row, thead.firstChild);
                 }
             } else {
                 var infoRow = this.indexTable[rowIndex],
