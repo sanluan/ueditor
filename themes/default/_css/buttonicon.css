@@ -306,10 +306,6 @@
     background-position: -540px 0;
 }
 
-.edui-default  .edui-for-webapp .edui-icon {
-    background-position: -601px -40px
-}
-
 .edui-default  .edui-for-table .edui-icon {
     background-position: -580px -20px;
 }
@@ -334,10 +330,6 @@
     background-position: -700px -40px;
 }
 
-.edui-default  .edui-for-snapscreen .edui-icon {
-    background-position: -581px -40px
-}
-
 .edui-default  .edui-for-scrawl .edui-icon {
     background-position: -801px -41px
 }
@@ -346,9 +338,6 @@
     background-position: -680px -40px;
 }
 
-.edui-default  .edui-for-music .edui-icon {
-    background-position: -18px -40px
-}
 
 .edui-default  .edui-for-formula .edui-icon {
     background-position: -200px -40px

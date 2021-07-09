@@ -7,7 +7,7 @@
  */
 UE.plugin.register('autoupload', function (){
 
-    function sendAndInsertFile(file, editor) {
+    function sendAndInsertFile(file, editor, successHandler , img) {
         var me  = editor;
         //模拟数据
         var fieldName, urlPrefix, maxSize, allowFiles, actionUrl,
@@ -30,44 +30,44 @@ UE.plugin.register('autoupload', function (){
                 'timeout': 4000
             });
         };
+        if( "function" !== typeof successHandler ) {
+            if (filetype == 'image') {
+                loadingHtml = '<img class="loadingclass" id="' + loadingId + '" src="' +
+                    me.options.themePath + me.options.theme +
+                    '/images/spacer.gif" title="' + (me.getLang('autoupload.loading') || '') + '" >';
+                successHandler = function(data) {
+                    var link = urlPrefix + data.url,
+                        loader = me.document.getElementById(loadingId);
+                    if (loader) {
+                        loader.setAttribute('src', link);
+                        loader.setAttribute('_src', link);
+                        loader.setAttribute('title', data.title || '');
+                        loader.setAttribute('alt', data.original || '');
+                        loader.removeAttribute('id');
+                        domUtils.removeClasses(loader, 'loadingclass');
+                    }
+                };
+            } else {
+                loadingHtml = '<p>' +
+                    '<img class="loadingclass" id="' + loadingId + '" src="' +
+                    me.options.themePath + me.options.theme +
+                    '/images/spacer.gif" title="' + (me.getLang('autoupload.loading') || '') + '" >' +
+                    '</p>';
+                successHandler = function(data) {
+                    var link = urlPrefix + data.url,
+                        loader = me.document.getElementById(loadingId);
 
-        if (filetype == 'image') {
-            loadingHtml = '<img class="loadingclass" id="' + loadingId + '" src="' +
-                me.options.themePath + me.options.theme +
-                '/images/spacer.gif" title="' + (me.getLang('autoupload.loading') || '') + '" >';
-            successHandler = function(data) {
-                var link = urlPrefix + data.url,
-                    loader = me.document.getElementById(loadingId);
-                if (loader) {
-                    loader.setAttribute('src', link);
-                    loader.setAttribute('_src', link);
-                    loader.setAttribute('title', data.title || '');
-                    loader.setAttribute('alt', data.original || '');
-                    loader.removeAttribute('id');
-                    domUtils.removeClasses(loader, 'loadingclass');
-                }
-            };
-        } else {
-            loadingHtml = '<p>' +
-                '<img class="loadingclass" id="' + loadingId + '" src="' +
-                me.options.themePath + me.options.theme +
-                '/images/spacer.gif" title="' + (me.getLang('autoupload.loading') || '') + '" >' +
-                '</p>';
-            successHandler = function(data) {
-                var link = urlPrefix + data.url,
-                    loader = me.document.getElementById(loadingId);
+                    var rng = me.selection.getRange(),
+                        bk = rng.createBookmark();
+                    rng.selectNode(loader).select();
+                    me.execCommand('insertfile', {'url': link});
+                    rng.moveToBookmark(bk).select();
+                };
+            }
 
-                var rng = me.selection.getRange(),
-                    bk = rng.createBookmark();
-                rng.selectNode(loader).select();
-                me.execCommand('insertfile', {'url': link});
-                rng.moveToBookmark(bk).select();
-            };
+            /* 插入loading的占位符 */
+            me.execCommand('inserthtml', loadingHtml);
         }
-
-        /* 插入loading的占位符 */
-        me.execCommand('inserthtml', loadingHtml);
-
         /* 判断后端配置是否没有加载成功 */
         if (!me.getOpt(filetype + 'ActionName')) {
             errorHandler(me.getLang('autoupload.errorLoadConfig'));
@@ -99,7 +99,7 @@ UE.plugin.register('autoupload', function (){
             try{
                 var json = (new Function("return " + utils.trim(e.target.response)))();
                 if (json.state == 'SUCCESS' && json.url) {
-                    successHandler(json);
+                    successHandler(json, img);
                 } else {
                     errorHandler(json.state);
                 }
@@ -109,7 +109,40 @@ UE.plugin.register('autoupload', function (){
         });
         xhr.send(fd);
     }
-
+    var base64HeaderRegExp = /^data:(\S*?);base64,/;
+    function dataToFile( data ) {
+        var contentType = data.match( base64HeaderRegExp )[ 1 ],
+            base64Data = data.replace( base64HeaderRegExp, '' ),
+            byteCharacters = atob( base64Data ),
+            byteArrays = [],
+            sliceSize = 512,
+            offset, slice, byteNumbers, i, byteArray;
+        for ( offset = 0; offset < byteCharacters.length; offset += sliceSize ) {
+            slice = byteCharacters.slice( offset, offset + sliceSize );
+            byteNumbers = new Array( slice.length );
+            for ( i = 0; i < slice.length; i++ ) {
+                byteNumbers[ i ] = slice.charCodeAt( i );
+            }
+            byteArray = new Uint8Array( byteNumbers );
+            byteArrays.push( byteArray );
+        }
+        return new Blob( byteArrays, { type: contentType } );
+    }
+    var me = this;
+    me.addListener("afterpaste", function () {
+        var images = domUtils.getElementsByTagName(me.body, "img");
+        var urlPrefix = me.getOpt('imageUrlPrefix');
+        for(var i=0;i<images.length;i++){
+            var src=images[i].getAttribute('src');
+            if ( base64HeaderRegExp.test(src) ) {
+                sendAndInsertFile(dataToFile( src ), me , function(data , img) {
+                    var link = urlPrefix + data.url;
+                    img.setAttribute('src',link);
+                    img.setAttribute('_src',link);
+                } , images[i]);
+            }
+        }
+    });
     function getPasteImage(e){
         return e.clipboardData && e.clipboardData.items && e.clipboardData.items.length == 1 && /^image\//.test(e.clipboardData.items[0].type) ? e.clipboardData.items:null;
     }

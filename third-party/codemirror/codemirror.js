@@ -1,16 +1,16 @@
-// CodeMirror version 2.2
+// UeCodeMirror version 2.2
 //
 // All functions that need access to the editor's state live inside
-// the CodeMirror function. Below that, at the bottom of the file,
+// the UeCodeMirror function. Below that, at the bottom of the file,
 // some utilities are defined.
 
-// CodeMirror is the only global var we claim
-var CodeMirror = (function() {
+// UeCodeMirror is the only global var we claim
+var UeCodeMirror = (function() {
     // This is the function that produces an editor instance. It's
     // closure is used to store the editor state.
-    function CodeMirror(place, givenOptions) {
+    function UeCodeMirror(place, givenOptions) {
         // Determine effective options based on given values and defaults.
-        var options = {}, defaults = CodeMirror.defaults;
+        var options = {}, defaults = UeCodeMirror.defaults;
         for (var opt in defaults)
             if (defaults.hasOwnProperty(opt))
                 options[opt] = (givenOptions && givenOptions.hasOwnProperty(opt) ? givenOptions : defaults)[opt];
@@ -18,20 +18,20 @@ var CodeMirror = (function() {
         var targetDocument = options["document"];
         // The element in which the editor lives.
         var wrapper = targetDocument.createElement("div");
-        wrapper.className = "CodeMirror" + (options.lineWrapping ? " CodeMirror-wrap" : "");
+        wrapper.className = "UeCodeMirror" + (options.lineWrapping ? " UeCodeMirror-wrap" : "");
         // This mess creates the base DOM structure for the editor.
         wrapper.innerHTML =
             '<div style="overflow: hidden; position: relative; width: 3px; height: 0px;">' + // Wraps and hides input textarea
                 '<textarea style="position: absolute; padding: 0; width: 1px;" wrap="off" ' +
                 'autocorrect="off" autocapitalize="off"></textarea></div>' +
-                '<div class="CodeMirror-scroll" tabindex="-1">' +
+                '<div class="UeCodeMirror-scroll" tabindex="-1">' +
                 '<div style="position: relative">' + // Set to the height of the text, causes scrolling
                 '<div style="position: relative">' + // Moved around its parent to cover visible view
-                '<div class="CodeMirror-gutter"><div class="CodeMirror-gutter-text"></div></div>' +
+                '<div class="UeCodeMirror-gutter"><div class="UeCodeMirror-gutter-text"></div></div>' +
                 // Provides positioning relative to (visible) text origin
-                '<div class="CodeMirror-lines"><div style="position: relative">' +
+                '<div class="UeCodeMirror-lines"><div style="position: relative">' +
                 '<div style="position: absolute; width: 100%; height: 0; overflow: hidden; visibility: hidden"></div>' +
-                '<pre class="CodeMirror-cursor">&#160;</pre>' + // Absolutely positioned blinky cursor
+                '<pre class="UeCodeMirror-cursor">&#160;</pre>' + // Absolutely positioned blinky cursor
                 '<div></div>' + // This DIV contains the actual code
                 '</div></div></div></div></div>';
         if (place.appendChild) place.appendChild(wrapper); else place(wrapper);
@@ -53,7 +53,7 @@ var CodeMirror = (function() {
         try { stringWidth("x"); }
         catch (e) {
             if (e.message.match(/runtime/i))
-                e = new Error("A CodeMirror inside a P-style element does not work in Internet Explorer. (innerHTML bug)");
+                e = new Error("A UeCodeMirror inside a P-style element does not work in Internet Explorer. (innerHTML bug)");
             throw e;
         }
 
@@ -126,11 +126,11 @@ var CodeMirror = (function() {
 
         function isLine(l) {return l >= 0 && l < doc.size;}
         // The instance object that we'll return. Mostly calls out to
-        // local functions in the CodeMirror function. Some do some extra
+        // local functions in the UeCodeMirror function. Some do some extra
         // range checking and/or clipping. operation is used to wrap the
         // call so that changes it makes are tracked, and the display is
         // updated afterwards.
-        var instance = wrapper.CodeMirror = {
+        var instance = wrapper.UeCodeMirror = {
             getValue: getValue,
             setValue: operation(setValue),
             getSelection: getSelection,
@@ -506,8 +506,8 @@ var CodeMirror = (function() {
             if (!focused) {
                 if (options.onFocus) options.onFocus(instance);
                 focused = true;
-                if (wrapper.className.search(/\bCodeMirror-focused\b/) == -1)
-                    wrapper.className += " CodeMirror-focused";
+                if (wrapper.className.search(/\bUeCodeMirror-focused\b/) == -1)
+                    wrapper.className += " UeCodeMirror-focused";
                 if (!leaveInputAlone) resetInput(true);
             }
             slowPoll();
@@ -517,7 +517,7 @@ var CodeMirror = (function() {
             if (focused) {
                 if (options.onBlur) options.onBlur(instance);
                 focused = false;
-                wrapper.className = wrapper.className.replace(" CodeMirror-focused", "");
+                wrapper.className = wrapper.className.replace(" UeCodeMirror-focused", "");
             }
             clearInterval(blinker);
             setTimeout(function() {if (!focused) shiftSelecting = null;}, 150);
@@ -1180,7 +1180,7 @@ var CodeMirror = (function() {
         }
 
         function loadMode() {
-            mode = CodeMirror.getMode(options, options.mode);
+            mode = UeCodeMirror.getMode(options, options.mode);
             doc.iter(0, doc.size, function(line) { line.stateAfter = null; });
             work = [0];
             startWorker();
@@ -1193,7 +1193,7 @@ var CodeMirror = (function() {
         }
         function wrappingChanged(from, to) {
             if (options.lineWrapping) {
-                wrapper.className += " CodeMirror-wrap";
+                wrapper.className += " UeCodeMirror-wrap";
                 var perLine = scroller.clientWidth / charWidth() - 3;
                 doc.iter(0, doc.size, function(line) {
                     if (line.hidden) return;
@@ -1202,7 +1202,7 @@ var CodeMirror = (function() {
                 });
                 lineSpace.style.width = code.style.width = "";
             } else {
-                wrapper.className = wrapper.className.replace(" CodeMirror-wrap", "");
+                wrapper.className = wrapper.className.replace(" UeCodeMirror-wrap", "");
                 maxWidth = null; maxLine = "";
                 doc.iter(0, doc.size, function(line) {
                     if (line.height != 1 && !line.hidden) updateLineHeight(line, 1);
@@ -1212,7 +1212,7 @@ var CodeMirror = (function() {
             changes.push({from: 0, to: doc.size});
         }
         function computeTabText() {
-            for (var str = '<span class="cm-tab">', i = 0; i < options.tabSize; ++i) str += " ";
+            for (var str = '<span class="uecm-tab">', i = 0; i < options.tabSize; ++i) str += " ";
             return str + "</span>";
         }
         function tabsChanged() {
@@ -1220,8 +1220,8 @@ var CodeMirror = (function() {
             updateDisplay(true);
         }
         function themeChanged() {
-            scroller.className = scroller.className.replace(/\s*cm-s-\w+/g, "") +
-                options.theme.replace(/(^|\s)\s*/g, " cm-s-");
+            scroller.className = scroller.className.replace(/\s*uecm-s-\w+/g, "") +
+                options.theme.replace(/(^|\s)\s*/g, " uecm-s-");
         }
 
         function TextMarker() { this.set = []; }
@@ -1384,9 +1384,9 @@ var CodeMirror = (function() {
                 extra = htmlEscape(line.text.slice(ch + 1, end < 0 ? line.text.length : end + (ie ? 5 : 0)));
             }
             measure.innerHTML = "<pre>" + line.getHTML(null, null, false, tabText, ch) +
-                '<span id="CodeMirror-temp-' + tempId + '">' + htmlEscape(line.text.charAt(ch) || " ") + "</span>" +
+                '<span id="UeCodeMirror-temp-' + tempId + '">' + htmlEscape(line.text.charAt(ch) || " ") + "</span>" +
                 extra + "</pre>";
-            var elt = document.getElementById("CodeMirror-temp-" + tempId);
+            var elt = document.getElementById("UeCodeMirror-temp-" + tempId);
             var top = elt.offsetTop, left = elt.offsetLeft;
             // Older IEs report zero offsets for spans directly after a wrap
             if (ie && ch && top == 0 && left == 0) {
@@ -1564,7 +1564,7 @@ var CodeMirror = (function() {
                 if (found) break;
             }
             if (!found) found = {pos: null, match: false};
-            var style = found.match ? "CodeMirror-matchingbracket" : "CodeMirror-nonmatchingbracket";
+            var style = found.match ? "UeCodeMirror-matchingbracket" : "UeCodeMirror-nonmatchingbracket";
             var one = markText({line: head.line, ch: pos}, {line: head.line, ch: pos+1}, style),
                 two = found.pos != null && markText({line: i, ch: found.pos}, {line: i, ch: found.pos + 1}, style);
             var clear = operation(function(){one.clear(); two && two.clear();});
@@ -1705,10 +1705,10 @@ var CodeMirror = (function() {
                 !instance.propertyIsEnumerable(ext))
                 instance[ext] = extensions[ext];
         return instance;
-    } // (end of function CodeMirror)
+    } // (end of function UeCodeMirror)
 
     // The default configuration options.
-    CodeMirror.defaults = {
+    UeCodeMirror.defaults = {
         value: "",
         mode: null,
         theme: "default",
@@ -1745,14 +1745,14 @@ var CodeMirror = (function() {
 
     // Known modes, by name and by MIME
     var modes = {}, mimeModes = {};
-    CodeMirror.defineMode = function(name, mode) {
-        if (!CodeMirror.defaults.mode && name != "null") CodeMirror.defaults.mode = name;
+    UeCodeMirror.defineMode = function(name, mode) {
+        if (!UeCodeMirror.defaults.mode && name != "null") UeCodeMirror.defaults.mode = name;
         modes[name] = mode;
     };
-    CodeMirror.defineMIME = function(mime, spec) {
+    UeCodeMirror.defineMIME = function(mime, spec) {
         mimeModes[mime] = spec;
     };
-    CodeMirror.getMode = function(options, spec) {
+    UeCodeMirror.getMode = function(options, spec) {
         if (typeof spec == "string" && mimeModes.hasOwnProperty(spec))
             spec = mimeModes[spec];
         if (typeof spec == "string")
@@ -1762,29 +1762,29 @@ var CodeMirror = (function() {
         var mfactory = modes[mname];
         if (!mfactory) {
             if (window.console) console.warn("No mode " + mname + " found, falling back to plain text.");
-            return CodeMirror.getMode(options, "text/plain");
+            return UeCodeMirror.getMode(options, "text/plain");
         }
         return mfactory(options, config || {});
     };
-    CodeMirror.listModes = function() {
+    UeCodeMirror.listModes = function() {
         var list = [];
         for (var m in modes)
             if (modes.propertyIsEnumerable(m)) list.push(m);
         return list;
     };
-    CodeMirror.listMIMEs = function() {
+    UeCodeMirror.listMIMEs = function() {
         var list = [];
         for (var m in mimeModes)
             if (mimeModes.propertyIsEnumerable(m)) list.push({mime: m, mode: mimeModes[m]});
         return list;
     };
 
-    var extensions = CodeMirror.extensions = {};
-    CodeMirror.defineExtension = function(name, func) {
+    var extensions = UeCodeMirror.extensions = {};
+    UeCodeMirror.defineExtension = function(name, func) {
         extensions[name] = func;
     };
 
-    var commands = CodeMirror.commands = {
+    var commands = UeCodeMirror.commands = {
         selectAll: function(cm) {cm.setSelection({line: 0, ch: 0}, {line: cm.lineCount() - 1});},
         killLine: function(cm) {
             var from = cm.getCursor(true), to = cm.getCursor(false), sel = !posEq(from, to);
@@ -1834,7 +1834,7 @@ var CodeMirror = (function() {
         toggleOverwrite: function(cm) {cm.toggleOverwrite();}
     };
 
-    var keyMap = CodeMirror.keyMap = {};
+    var keyMap = UeCodeMirror.keyMap = {};
     keyMap.basic = {
         "Left": "goCharLeft", "Right": "goCharRight", "Up": "goLineUp", "Down": "goLineDown",
         "End": "goLineEnd", "Home": "goLineStartSmart", "PageUp": "goPageUp", "PageDown": "goPageDown",
@@ -1887,7 +1887,7 @@ var CodeMirror = (function() {
         return name == "Ctrl" || name == "Alt" || name == "Shift" || name == "Mod";
     }
 
-    CodeMirror.fromTextArea = function(textarea, options) {
+    UeCodeMirror.fromTextArea = function(textarea, options) {
         if (!options) options = {};
         options.value = textarea.value;
         if (!options.tabindex && textarea.tabindex)
@@ -1910,7 +1910,7 @@ var CodeMirror = (function() {
         }
 
         textarea.style.display = "none";
-        var instance = CodeMirror(function(node) {
+        var instance = UeCodeMirror(function(node) {
             textarea.parentNode.insertBefore(node, textarea.nextSibling);
         }, options);
         instance.save = save;
@@ -1941,11 +1941,11 @@ var CodeMirror = (function() {
         }
         return nstate;
     }
-    CodeMirror.copyState = copyState;
+    UeCodeMirror.copyState = copyState;
     function startState(mode, a1, a2) {
         return mode.startState ? mode.startState(a1, a2) : true;
     }
-    CodeMirror.startState = startState;
+    UeCodeMirror.startState = startState;
 
     // The character stream used by a mode's parser.
     function StringStream(string, tabSize) {
@@ -2001,7 +2001,7 @@ var CodeMirror = (function() {
         },
         current: function(){return this.string.slice(this.start, this.pos);}
     };
-    CodeMirror.StringStream = StringStream;
+    UeCodeMirror.StringStream = StringStream;
 
     function MarkedText(from, to, className, set) {
         this.from = from; this.to = to; this.style = className; this.set = set;
@@ -2245,13 +2245,13 @@ var CodeMirror = (function() {
             if (endAt != null) len = Math.min(endAt, len);
 
             if (!allText && endAt == null)
-                span(" ", sfrom != null && sto == null ? "CodeMirror-selected" : null);
+                span(" ", sfrom != null && sto == null ? "UeCodeMirror-selected" : null);
             else if (!marked && sfrom == null)
                 for (var i = 0, ch = 0; ch < len; i+=2) {
                     var str = st[i], style = st[i+1], l = str.length;
                     if (ch + l > len) str = str.slice(0, len - ch);
                     ch += l;
-                    span(str, style && "cm-" + style);
+                    span(str, style && "uecm-" + style);
                 }
             else {
                 var pos = 0, i = 0, text = "", style, sg = 0;
@@ -2269,7 +2269,7 @@ var CodeMirror = (function() {
                     if (sfrom != null) {
                         if (sfrom > pos) upto = sfrom;
                         else if (sto == null || sto > pos) {
-                            extraStyle = " CodeMirror-selected";
+                            extraStyle = " UeCodeMirror-selected";
                             if (sto != null) upto = Math.min(upto, sto);
                         }
                     }
@@ -2288,10 +2288,10 @@ var CodeMirror = (function() {
                         span(end > upto ? text.slice(0, upto - pos) : text, appliedStyle);
                         if (end >= upto) {text = text.slice(upto - pos); pos = upto; break;}
                         pos = end;
-                        text = st[i++]; style = "cm-" + st[i++];
+                        text = st[i++]; style = "uecm-" + st[i++];
                     }
                 }
-                if (sfrom != null && sto == null) span(" ", "CodeMirror-selected");
+                if (sfrom != null && sto == null) span(" ", "UeCodeMirror-selected");
             }
             if (includePre) html.push("</pre>");
             return html.join("");
@@ -2554,9 +2554,9 @@ var CodeMirror = (function() {
         else e.cancelBubble = true;
     }
     function e_stop(e) {e_preventDefault(e); e_stopPropagation(e);}
-    CodeMirror.e_stop = e_stop;
-    CodeMirror.e_preventDefault = e_preventDefault;
-    CodeMirror.e_stopPropagation = e_stopPropagation;
+    UeCodeMirror.e_stop = e_stop;
+    UeCodeMirror.e_preventDefault = e_preventDefault;
+    UeCodeMirror.e_stopPropagation = e_stopPropagation;
 
     function e_target(e) {return e.target || e.srcElement;}
     function e_button(e) {
@@ -2579,7 +2579,7 @@ var CodeMirror = (function() {
             if (disconnect) return function() {node.detachEvent("on" + type, wrapHandler);};
         }
     }
-    CodeMirror.connect = connect;
+    UeCodeMirror.connect = connect;
 
     function Delayed() {this.id = null;}
     Delayed.prototype = {set: function(ms, f) {clearTimeout(this.id); this.id = setTimeout(f, ms);}};
@@ -2690,7 +2690,7 @@ var CodeMirror = (function() {
             escapeElement.appendChild(document.createTextNode(str));
             return escapeElement.innerHTML;
         };
-    CodeMirror.htmlEscape = htmlEscape;
+    UeCodeMirror.htmlEscape = htmlEscape;
 
     // Used to position the cursor after an undo/redo by finding the
     // last edited character.
@@ -2723,7 +2723,7 @@ var CodeMirror = (function() {
         result.push(string.slice(pos));
         return result;
     } : function(string){return string.split(/\r?\n/);};
-    CodeMirror.splitLines = splitLines;
+    UeCodeMirror.splitLines = splitLines;
 
     var hasSelection = window.getSelection ? function(te) {
         try { return te.selectionStart != te.selectionEnd; }
@@ -2735,10 +2735,10 @@ var CodeMirror = (function() {
         return range.compareEndPoints("StartToEnd", range) != 0;
     };
 
-    CodeMirror.defineMode("null", function() {
+    UeCodeMirror.defineMode("null", function() {
         return {token: function(stream) {stream.skipToEnd();}};
     });
-    CodeMirror.defineMIME("text/plain", "null");
+    UeCodeMirror.defineMIME("text/plain", "null");
 
     var keyNames = {3: "Enter", 8: "Backspace", 9: "Tab", 13: "Enter", 16: "Shift", 17: "Ctrl", 18: "Alt",
         19: "Pause", 20: "CapsLock", 27: "Esc", 32: "Space", 33: "PageUp", 34: "PageDown", 35: "End",
@@ -2747,7 +2747,7 @@ var CodeMirror = (function() {
         189: "-", 190: ".", 191: "/", 192: "`", 219: "[", 220: "\\", 221: "]", 222: "'", 63276: "PageUp",
         63277: "PageDown", 63275: "End", 63273: "Home", 63234: "Left", 63232: "Up", 63235: "Right",
         63233: "Down", 63302: "Insert", 63272: "Delete"};
-    CodeMirror.keyNames = keyNames;
+    UeCodeMirror.keyNames = keyNames;
     (function() {
         // Number keys
         for (var i = 0; i < 10; i++) keyNames[i + 48] = String(i);
@@ -2757,9 +2757,9 @@ var CodeMirror = (function() {
         for (var i = 1; i <= 12; i++) keyNames[i + 111] = keyNames[i + 63235] = "F" + i;
     })();
 
-    return CodeMirror;
+    return UeCodeMirror;
 })();
-CodeMirror.defineMode("xml", function(config, parserConfig) {
+UeCodeMirror.defineMode("xml", function(config, parserConfig) {
     var indentUnit = config.indentUnit;
     var Kludges = parserConfig.htmlMode ? {
         autoSelfClosers: {"br": true, "img": true, "hr": true, "link": true, "input": true,
@@ -3009,9 +3009,9 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
     };
 });
 
-CodeMirror.defineMIME("application/xml", "xml");
-CodeMirror.defineMIME("text/html", {name: "xml", htmlMode: true});
-CodeMirror.defineMode("javascript", function(config, parserConfig) {
+UeCodeMirror.defineMIME("application/xml", "xml");
+UeCodeMirror.defineMIME("text/html", {name: "xml", htmlMode: true});
+UeCodeMirror.defineMode("javascript", function(config, parserConfig) {
     var indentUnit = config.indentUnit;
     var jsonMode = parserConfig.json;
 
@@ -3369,10 +3369,10 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     };
 });
 
-CodeMirror.defineMIME("text/javascript", "javascript");
-CodeMirror.defineMIME("application/json", {name: "javascript", json: true});
+UeCodeMirror.defineMIME("text/javascript", "javascript");
+UeCodeMirror.defineMIME("application/json", {name: "javascript", json: true});
 
-CodeMirror.defineMode("css", function(config) {
+UeCodeMirror.defineMode("css", function(config) {
     var indentUnit = config.indentUnit, type;
     function ret(style, tp) {type = tp; return style;}
 
@@ -3495,11 +3495,11 @@ CodeMirror.defineMode("css", function(config) {
     };
 });
 
-CodeMirror.defineMIME("text/css", "css");
-CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
-    var htmlMode = CodeMirror.getMode(config, {name: "xml", htmlMode: true});
-    var jsMode = CodeMirror.getMode(config, "javascript");
-    var cssMode = CodeMirror.getMode(config, "css");
+UeCodeMirror.defineMIME("text/css", "css");
+UeCodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
+    var htmlMode = UeCodeMirror.getMode(config, {name: "xml", htmlMode: true});
+    var jsMode = UeCodeMirror.getMode(config, "javascript");
+    var cssMode = UeCodeMirror.getMode(config, "css");
 
     function html(stream, state) {
         var style = htmlMode.token(stream, state.htmlState);
@@ -3552,9 +3552,9 @@ CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
 
         copyState: function(state) {
             if (state.localState)
-                var local = CodeMirror.copyState(state.token == css ? cssMode : jsMode, state.localState);
+                var local = UeCodeMirror.copyState(state.token == css ? cssMode : jsMode, state.localState);
             return {token: state.token, localState: local, mode: state.mode,
-                htmlState: CodeMirror.copyState(htmlMode, state.htmlState)};
+                htmlState: UeCodeMirror.copyState(htmlMode, state.htmlState)};
         },
 
         token: function(stream, state) {
@@ -3578,4 +3578,4 @@ CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
     }
 });
 
-CodeMirror.defineMIME("text/html", "htmlmixed");
+UeCodeMirror.defineMIME("text/html", "htmlmixed");

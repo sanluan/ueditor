@@ -168,6 +168,10 @@ UE.plugins['autotypeset'] = function(){
                 domUtils.removeAttributes(ci,['class']);
             }
 
+            if(opt.removeClass && ci.style){
+                domUtils.removeAttributes(ci,['style']);
+            }
+
             //表情不处理
             if(opt.imageBlockLine && ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion')){
                 if(html){

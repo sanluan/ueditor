@@ -192,7 +192,82 @@ UE.plugins['paste'] = function () {
             me.fireEvent("afterpaste", html);
         }
     }
+    function extractFromRtf( rtfContent ) {
+        var ret = [],
+            rePictureHeader = /\{\\pict[\s\S]+?\\bliptag\-?\d+(\\blipupi\-?\d+)?(\{\\\*\\blipuid\s?[\da-fA-F]+)?[\s\}]*?/,
+            rePicture = new RegExp( '(?:(' + rePictureHeader.source + '))([\\da-fA-F\\s]+)\\}', 'g' ),
+            wholeImages,
+            imageType;
 
+        wholeImages = rtfContent.match( rePicture );
+        if ( !wholeImages ) {
+            return ret;
+        }
+
+        for ( var i = 0; i < wholeImages.length; i++ ) {
+            if ( rePictureHeader.test( wholeImages[ i ] ) ) {
+                if ( wholeImages[ i ].indexOf( '\\pngblip' ) !== -1 ) {
+                    imageType = 'image/png';
+                } else if ( wholeImages[ i ].indexOf( '\\jpegblip' ) !== -1 ) {
+                    imageType = 'image/jpeg';
+                } else {
+                    continue;
+                }
+
+                ret.push( {
+                    hex: imageType ? wholeImages[ i ].replace( rePictureHeader, '' ).replace( /[^\da-fA-F]/g, '' ) : null,
+                    type: imageType
+                } );
+            }
+        }
+        return ret;
+    }
+    function convertHexStringToBytes( hexString ) {
+        var bytesArray = [],
+            bytesArrayLength = hexString.length / 2,
+            i;
+        for ( i = 0; i < bytesArrayLength; i++ ) {
+            bytesArray.push( parseInt( hexString.substr( i * 2, 2 ), 16 ) );
+        }
+        return bytesArray;
+    }
+    function convertBytesToBase64( bytesArray ) {
+        var base64characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+            base64string = '',
+            bytesArrayLength = bytesArray.length,
+            i;
+
+        for ( i = 0; i < bytesArrayLength; i += 3 ) {
+            var array3 = bytesArray.slice( i, i + 3 ),
+                array3length = array3.length,
+                array4 = [],
+                j;
+
+            if ( array3length < 3 ) {
+                for ( j = array3length; j < 3; j++ ) {
+                    array3[ j ] = 0;
+                }
+            }
+
+            array4[ 0 ] = ( array3[ 0 ] & 0xFC ) >> 2;
+            array4[ 1 ] = ( ( array3[ 0 ] & 0x03 ) << 4 ) | ( array3[ 1 ] >> 4 );
+            array4[ 2 ] = ( ( array3[ 1 ] & 0x0F ) << 2 ) | ( ( array3[ 2 ] & 0xC0 ) >> 6 );
+            array4[ 3 ] = array3[ 2 ] & 0x3F;
+
+            for ( j = 0; j < 4; j++ ) {
+                if ( j <= array3length ) {
+                    base64string += base64characters.charAt( array4[ j ] );
+                } else {
+                    base64string += '=';
+                }
+            }
+
+        }
+        return base64string;
+    }
+    function createSrcWithBase64( img ) {
+                return img.type ? 'data:' + img.type + ';base64,' + convertBytesToBase64( convertHexStringToBytes( img.hex ) ) : null;
+    }
     me.addListener('pasteTransfer', function (cmd, plainType) {
 
         if (address && txtContent && htmlContent && txtContent != htmlContent) {
@@ -282,7 +357,26 @@ UE.plugins['paste'] = function () {
             if ((browser.ie || browser.opera) && ((!e.ctrlKey && !e.metaKey) || e.keyCode != '86')) {
                 return;
             }
+            var clipboardData = event.clipboardData;
+            var rtfContent;
+            if(0 < clipboardData.items.length && -1 < clipboardData.types.indexOf('text/rtf') ) {
+                rtfContent = clipboardData.getData('text/rtf');
+            }
             getClipboardData.call(me, function (div) {
+                var wordImages=[];
+                utils.each(domUtils.getElementsByTagName(div, "img"), function (img) {
+                    if (img.getAttribute('src') && img.getAttribute('src').indexOf( 'file://' ) === 0  ) {
+                        wordImages.push(img);
+                    }
+                });
+                if(0 < wordImages.length && rtfContent){
+                    var hexImages = extractFromRtf( rtfContent );
+                    if ( wordImages.length === hexImages.length ) {
+                        for ( i = 0; i < wordImages.length; i++ ) {
+                            wordImages[i].setAttribute('src', createSrcWithBase64( hexImages[i] ));
+                        }
+                    }
+                }
                 filter(div);
             });
         });
