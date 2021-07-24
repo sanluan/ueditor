@@ -363,6 +363,7 @@ UE.plugins['paste'] = function () {
                 rtfContent = clipboardData.getData('text/rtf');
             }
             getClipboardData.call(me, function (div) {
+                div.innerHTML = UE.filterWord(div.innerHTML);
                 var wordImages=[];
                 utils.each(domUtils.getElementsByTagName(div, "img"), function (img) {
                     if (img.getAttribute('src') && img.getAttribute('src').indexOf( 'file://' ) === 0  ) {
