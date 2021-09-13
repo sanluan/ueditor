@@ -357,7 +357,7 @@ UE.plugins['paste'] = function () {
             if ((browser.ie || browser.opera) && ((!e.ctrlKey && !e.metaKey) || e.keyCode != '86')) {
                 return;
             }
-            var clipboardData = event.clipboardData;
+            var clipboardData = e.clipboardData;
             var rtfContent;
             if(0 < clipboardData.items.length && -1 < clipboardData.types.indexOf('text/rtf') ) {
                 rtfContent = clipboardData.getData('text/rtf');
