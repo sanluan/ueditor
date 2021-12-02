@@ -67,6 +67,12 @@ ue.ready(function(){
     var txt = ue.getContentTxt();
 });
 ```
+## 重新编译 ##
+
+```
+npm install grunt -g
+grunt --encode=utf8
+```
 
 ueditor的更多API请看[API 文档](http://ueditor.baidu.com/doc "ueditor API 文档")
 
