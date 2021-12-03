@@ -126,6 +126,7 @@ UE.plugins['autotypeset'] = function(){
                  ci.style.fontSize = opt.defaultFontsize;
                  removeNotAttributeSpan(ci);
             }
+
             if(opt.defaultFontFamily && !ci.style.fontFamily){
                  ci.style.fontFamily	 = opt.defaultFontFamily;
                  removeNotAttributeSpan(ci);
