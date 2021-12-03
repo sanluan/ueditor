@@ -45,8 +45,10 @@
                 } else {
                     opt[attrName] = false;
                 }
-            } else {
+            } else if(inputType=="radio"){
                 opt[ipt.getAttribute("value")] = ipt.checked;
+            } else if(inputType=="text"){
+                opt[ipt.getAttribute("name")] = ipt.value;
             }
 
         }
@@ -54,7 +56,7 @@
         var selects = domUtils.getElementsByTagName(cont,"select");
         for(var i=0,si;si=selects[i++];){
             var attr = si.getAttribute('name');
-            opt[attr] = opt[attr] ? si.value : '';
+            opt[attr] = si.value ? si.value : '';
         }
 
         utils.extend(me.editor.options.autotypeset,opt);

@@ -22,10 +22,15 @@ UE.plugins['autotypeset'] = function(){
         removeClass: true,              //去掉冗余的class
         removeEmptyline: false,         //去掉空行
         textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
-        imageBlockLine: 'center',       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+        imageBlockLine: "center",       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
         pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
         clearFontSize: false,           //去掉所有的内嵌字号，使用编辑器默认的字号
         clearFontFamily: false,         //去掉所有的内嵌字体，使用编辑器默认的字体
+        defaultFontsize: "",            //默认字号
+        defaultFontFamily: "",          //默认字体
+        rowspacingtop: "",              //段前距
+        rowspacingbottom: "",           //段后距
+        lineheight:"",                  //行高
         removeEmptyNode: false,         // 去掉空节点
         //可以去掉的标签
         removeTagNames: utils.extend({div:1},dtd.$removeEmpty),
@@ -109,14 +114,21 @@ UE.plugins['autotypeset'] = function(){
              //font-size
             if(opt.clearFontSize && ci.style.fontSize){
                 domUtils.removeStyle(ci,'font-size');
-
                 removeNotAttributeSpan(ci);
-
             }
             //font-family
             if(opt.clearFontFamily && ci.style.fontFamily){
                 domUtils.removeStyle(ci,'font-family');
                 removeNotAttributeSpan(ci);
+            }
+
+            if(opt.defaultFontsize && !ci.style.fontSize){
+                 ci.style.fontSize = opt.defaultFontsize;
+                 removeNotAttributeSpan(ci);
+            }
+            if(opt.defaultFontFamily && !ci.style.fontFamily){
+                 ci.style.fontFamily	 = opt.defaultFontFamily;
+                 removeNotAttributeSpan(ci);
             }
 
             if(isLine(ci)){
@@ -154,22 +166,23 @@ UE.plugins['autotypeset'] = function(){
                 if(opt.textAlign){
                     ci.style.textAlign = opt.textAlign;
                 }
-                // if(opt.lineHeight)
-                //     ci.style.lineHeight = opt.lineHeight + 'cm';
-
+                if(opt.lineHeight){
+                     ci.style.lineHeight = opt.lineHeight;
+                }
+                if(opt.rowspacingtop){
+                     ci.style.marginTop = opt.rowspacingtop;
+                }
+                if(opt.rowspacingbottom){
+                     ci.style.marginBottom = opt.rowspacingbottom;
+                }
             }
 
             //去掉class,保留的class不去掉
             if(opt.removeClass && ci.className && !remainClass[ci.className.toLowerCase()]){
-
                 if(highlightCont && highlightCont.contains(ci)){
                      continue;
                 }
                 domUtils.removeAttributes(ci,['class']);
-            }
-
-            if(opt.removeClass && ci.style){
-                domUtils.removeAttributes(ci,['style']);
             }
 
             //表情不处理
@@ -199,11 +212,7 @@ UE.plugins['autotypeset'] = function(){
                                     }else{
                                         domUtils.setStyle(tmpNode,'text-align','');
                                     }
-
-
                                 }
-
-
                             }
                             domUtils.setStyle(img,'float', opt.imageBlockLine);
                             break;
@@ -219,16 +228,12 @@ UE.plugins['autotypeset'] = function(){
                                 }
                                 var pNode = me.document.createElement('p');
                                 domUtils.setAttributes(pNode,{
-
                                     style:'text-align:center'
                                 });
                                 tmpNode.parentNode.insertBefore(pNode,tmpNode);
                                 pNode.appendChild(tmpNode);
                                 domUtils.setStyle(tmpNode,'float','');
-
                             }
-
-
                     }
                 } else {
                     var range = me.selection.getRange();

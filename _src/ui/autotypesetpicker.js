@@ -16,6 +16,19 @@
             var me = this.editor,
                 opt = me.options.autotypeset,
                 lang = me.getLang("autoTypeSet");
+                list = me.options['fontfamily'] || [];
+                title = me.options.labelMap['fontfamily'] || me.getLang("labelMap.fontfamily") || '';
+                fontFamilyHtml = '<select name="defaultFontFamily">';
+
+            for (var i = 0, ci, items = []; ci = list[i]; i++) {
+                var langLabel = me.getLang('fontfamily')[ci.name] || "";
+
+                (function (key, val) {
+                    fontFamilyHtml += '<option value="'+utils.unhtml(val)+'"'+((opt["defaultFontFamily"] && opt["defaultFontFamily"] == val) ? "selected=\"selected\"" : "")+'>'+key+'</option>'
+                })(ci.label || langLabel, ci.val)
+            }
+
+            fontFamilyHtml += '</select>';
 
             var textAlignInputName = 'textAlignValue' + me.uid,
                 imageBlockInputName = 'imageBlockLineValue' + me.uid,
@@ -44,6 +57,8 @@
                 '</td>' +
                 '</tr>' +
                 '<tr><td nowrap><input type="checkbox" name="clearFontSize" ' + (opt["clearFontSize"] ? "checked" : "" ) + '>' + lang.removeFontsize + '</td><td colspan="2"><input type="checkbox" name="clearFontFamily" ' + (opt["clearFontFamily"] ? "checked" : "" ) + '>' + lang.removeFontFamily + '</td></tr>' +
+                '<tr><td nowrap><label>' + lang.defaultFontsize + '</label><input type="text" size="4" name="defaultFontsize" value="' + (opt["defaultFontsize"] ? opt["defaultFontsize"] : "" ) + '"></td><td colspan="2"><label>' + lang.defaultFontFamily + '</label>'+fontFamilyHtml+'</td></tr>' +
+                '<tr><td nowrap><label>' + lang.rowspacingtop + '</label><input type="text" name="rowspacingtop" size="4" value="' + (opt["rowspacingtop"] ? opt["rowspacingtop"] : "" ) + '"></td><td colspan="2"><label>' + lang.rowspacingbottom + '</label><input type="text" name="rowspacingbottom" size="4" value="' + (opt["rowspacingbottom"] ? opt["rowspacingbottom"] : "" ) + '"><label>' + lang.lineHeight + '</label><input type="text" name="lineHeight" size="4" value="' + (opt["lineHeight"] ? opt["lineHeight"] : "" ) + '"></td></tr>' +
                 '<tr><td nowrap colspan="3"><input type="checkbox" name="removeEmptyNode" ' + (opt["removeEmptyNode"] ? "checked" : "" ) + '>' + lang.removeHtml + '</td></tr>' +
                 '<tr><td nowrap colspan="3"><input type="checkbox" name="pasteFilter" ' + (opt["pasteFilter"] ? "checked" : "" ) + '>' + lang.pasteFilter + '</td></tr>' +
                 '<tr>' +
