@@ -21,6 +21,7 @@ UE.plugins['autotypeset'] = function(){
         mergeEmptyline: true,           //合并空行
         removeClass: true,              //去掉冗余的class
         removeEmptyline: false,         //去掉空行
+        removeSpace:false,              //去掉空格
         textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
         imageBlockLine: "center",       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
         pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
@@ -122,16 +123,6 @@ UE.plugins['autotypeset'] = function(){
                 removeNotAttributeSpan(ci);
             }
 
-            if(opt.defaultFontsize && !ci.style.fontSize){
-                 ci.style.fontSize = opt.defaultFontsize;
-                 removeNotAttributeSpan(ci);
-            }
-
-            if(opt.defaultFontFamily && !ci.style.fontFamily){
-                 ci.style.fontFamily	 = opt.defaultFontFamily;
-                 removeNotAttributeSpan(ci);
-            }
-
             if(isLine(ci)){
                 //合并空行
                 if(opt.mergeEmptyline ){
@@ -144,7 +135,6 @@ UE.plugins['autotypeset'] = function(){
                         }
                         domUtils.remove(tmpNode);
                     }
-
                 }
                  //去掉空行，保留占位的空行
                 if(opt.removeEmptyline && domUtils.inDoc(ci,cont) && !remainTag[ci.parentNode.tagName.toLowerCase()] ){
@@ -156,7 +146,13 @@ UE.plugins['autotypeset'] = function(){
                     }
                     domUtils.remove(ci);
                     continue;
+                }
+                if(opt.defaultFontsize && !ci.style.fontSize){
+                     ci.style.fontSize = opt.defaultFontsize;
+                }
 
+                if(opt.defaultFontFamily && !ci.style.fontFamily){
+                     ci.style.fontFamily	 = opt.defaultFontFamily;
                 }
 
             }
@@ -250,6 +246,16 @@ UE.plugins['autotypeset'] = function(){
                     domUtils.remove(ci);
                 }
             }
+        }
+        //去掉空格
+        if(opt.removeSpace ){
+            var root = UE.htmlparser(cont.innerHTML);
+            root.traversal(function(node){
+                if(node.type == 'text'){
+                    node.data = node.data.replace(/ /g,'').replace(/&nbsp;/ig,'');
+                }
+            });
+            cont.innerHTML = root.toHtml()
         }
         if(opt.tobdc){
             var root = UE.htmlparser(cont.innerHTML);

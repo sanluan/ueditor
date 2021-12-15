@@ -359,7 +359,7 @@ UE.plugins['paste'] = function () {
             }
             var clipboardData = e.clipboardData;
             var rtfContent;
-            if(0 < clipboardData.items.length && -1 < clipboardData.types.indexOf('text/rtf') ) {
+            if(-1 < clipboardData.types.indexOf('text/rtf') ) {
                 rtfContent = clipboardData.getData('text/rtf');
             }
             getClipboardData.call(me, function (div) {
