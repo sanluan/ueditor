@@ -20,9 +20,7 @@
 UE.plugins['rowspacing'] = function(){
     var me = this;
     me.setOpt({
-        'rowspacingtop':['5', '10', '15', '20', '25'],
-        'rowspacingbottom':['5', '10', '15', '20', '25']
-
+        'rowspacing':['5', '10', '15', '20', '25']
     });
     me.commands['rowspacing'] =  {
         execCommand : function( cmdName,value,dir ) {

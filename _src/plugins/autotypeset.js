@@ -24,6 +24,8 @@ UE.plugins['autotypeset'] = function(){
         removeSpace:false,              //去掉空格
         textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
         imageBlockLine: "center",       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+        removeImageSize:false,          //清除图片尺寸
+        imageWidth: "",                 //图片的宽度
         pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
         clearFontSize: false,           //去掉所有的内嵌字号，使用编辑器默认的字号
         clearFontFamily: false,         //去掉所有的内嵌字体，使用编辑器默认的字体
@@ -147,30 +149,28 @@ UE.plugins['autotypeset'] = function(){
                     domUtils.remove(ci);
                     continue;
                 }
-                if(opt.defaultFontsize && !ci.style.fontSize){
-                     ci.style.fontSize = opt.defaultFontsize;
-                }
-
-                if(opt.defaultFontFamily && !ci.style.fontFamily){
-                     ci.style.fontFamily	 = opt.defaultFontFamily;
-                }
-
             }
             if(isLine(ci,true) && ci.tagName != 'SPAN'){
+                if(opt.defaultFontsize && !ci.style.fontSize){
+                    ci.style.fontSize = opt.defaultFontsize + 'px';
+                }
+                if(opt.defaultFontFamily && !ci.style.fontFamily){
+                    ci.style.fontFamily	 = opt.defaultFontFamily;
+                }
                 if(opt.indent){
                     ci.style.textIndent = opt.indentValue;
                 }
                 if(opt.textAlign){
                     ci.style.textAlign = opt.textAlign;
                 }
-                if(opt.lineHeight){
-                     ci.style.lineHeight = opt.lineHeight;
+                if(opt.lineheight){
+                    ci.style.lineHeight = (opt.lineheight == "1" ? "normal" : opt.lineheight + 'em') ;
                 }
                 if(opt.rowspacingtop){
-                     ci.style.marginTop = opt.rowspacingtop;
+                    ci.style.marginTop = opt.rowspacingtop+ 'px';
                 }
                 if(opt.rowspacingbottom){
-                     ci.style.marginBottom = opt.rowspacingbottom;
+                    ci.style.marginBottom = opt.rowspacingbottom+ 'px';
                 }
             }
 
@@ -181,7 +181,23 @@ UE.plugins['autotypeset'] = function(){
                 }
                 domUtils.removeAttributes(ci,['class']);
             }
+            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion')){
+                //清理宽度高度
+                if(opt.removeImageSize){
+                    domUtils.removeStyle(ci,'width');
+                    domUtils.removeStyle(ci,'height');
+                    domUtils.removeAttributes(ci,['width','height']);
+                }
 
+                //图片宽度设定
+                if(opt.imageWidth && !domUtils.getStyle(ci,'width')){
+                    var img = ci;
+                    if(img.width > (parseInt(opt.imageWidth) / 4)){
+                        domUtils.setStyle(img,'width',opt.imageWidth+'px');
+                        domUtils.setStyle(img,'height','auto');
+                    }
+                }
+            }
             //表情不处理
             if(opt.imageBlockLine && ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion')){
                 if(html){

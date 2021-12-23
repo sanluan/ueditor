@@ -632,7 +632,7 @@
     for (var r = 0, ri; ri = rowspacings[r++];) {
         (function (cmd) {
             editorui['rowspacing' + cmd] = function (editor) {
-                var val = editor.options['rowspacing' + cmd] || [];
+                var val = editor.options['rowspacing'] || [];
                 if (!val.length) return null;
                 for (var i = 0, ci, items = []; ci = val[i++];) {
                     items.push({

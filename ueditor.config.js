@@ -199,13 +199,9 @@
         //段落格式 值留空时支持多语言自动识别，若配置，则以配置值为准
         //,'paragraph':{'p':'', 'h1':'', 'h2':'', 'h3':'', 'h4':'', 'h5':'', 'h6':''}
 
-        //rowspacingtop
+        //rowspacing
         //段间距 值和显示的名字相同
-        //,'rowspacingtop':['5', '10', '15', '20', '25']
-
-        //rowspacingBottom
-        //段间距 值和显示的名字相同
-        //,'rowspacingbottom':['5', '10', '15', '20', '25']
+        //,'rowspacing':['5', '10', '15', '20', '25']
 
         //lineheight
         //行内间距 值和显示的名字相同
@@ -308,6 +304,8 @@
         //    removeSpace: false,             //去掉空格
         //    textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
         //    imageBlockLine: 'center',       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+        //    removeImageSize:false,          //清除图片尺寸
+        //    imageWidth: "",                 //图片的宽度
         //    pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
         //    clearFontSize: false,           //去掉所有的内嵌字号，使用编辑器默认的字号
         //    clearFontFamily: false,         //去掉所有的内嵌字体，使用编辑器默认的字体

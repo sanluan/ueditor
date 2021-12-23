@@ -122,7 +122,7 @@
                         }
                         // 点击radio,选中对应的checkbox
                         if (target.name == ('imageBlockLineValue' + editorId) || target.name == ('textAlignValue' + editorId) || target.name == 'bdc') {
-                            var checkboxs = target.parentNode.previousSibling.getElementsByTagName('input');
+                            var checkboxs = target.parentNode.parentNode.previousSibling.getElementsByTagName('input');
                             checkboxs && (checkboxs[0].checked = true);
                         }
 
