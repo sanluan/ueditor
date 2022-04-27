@@ -1,5 +1,27 @@
-Get Started
+
 =====
+## 修改记录
+
+1. 文件上传取消flash
+1. 表情、列表图片素材本地化
+1. 增加日文翻译
+1. 增加word文档复制图片自动上传
+1. 增加base64图片自动转存
+1. 移除截图工具
+1. 移除webapp、音乐、图片搜索等失效功能
+1. 提升ie8兼容性
+1. 增加视频封面设置、已上传视频选择功能
+1. 一键排版增加字号、字体、行间距、段前断后距离、空格替换设置
+1. 处理中文双引号不能正常转义bug
+
+## 编译 ##
+
+```
+npm install grunt -g
+grunt
+```
+
+Get Started
 
 ## ueditor富文本编辑器介绍
 
@@ -67,12 +89,6 @@ ue.ready(function(){
     var txt = ue.getContentTxt();
 });
 ```
-## 重新编译 ##
-
-```
-npm install grunt -g
-grunt --encode=utf8
-```
 
 ueditor的更多API请看[API 文档](http://ueditor.baidu.com/doc "ueditor API 文档")
 
@@ -87,7 +103,6 @@ ueditor github 地址：[http://github.com/fex-team/ueditor](http://github.com/f
 ## 详细文档
 
 ueditor 文档：[http://fex.baidu.com/ueditor/](http://fex.baidu.com/ueditor/)
-
 
 
 ## 联系我们 ##
