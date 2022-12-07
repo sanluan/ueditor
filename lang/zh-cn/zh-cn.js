@@ -439,7 +439,8 @@ UE.I18N['zh-cn'] = {
         'resume':"个人简历",
         'richText':"图文混排",
         'sciPapers':"科技论文",
-        'squareNumber':"方块序号"
+        'squareNumber':"方块序号",
+        'scroll':"滚动区域"
     },
     'scrawl':{
         'static':{

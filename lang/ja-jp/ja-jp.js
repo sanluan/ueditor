@@ -434,7 +434,8 @@ UE.I18N['ja-jp'] = {
         'resume':"履歴書",
         'richText':"イメージとテキスト",
         'sciPapers':"技術論文",
-        'squareNumber':'ブロック番号'
+        'squareNumber':"ブロック番号",
+        'scroll':"スクロール領域"
     },
     'scrawl':{
         'static':{

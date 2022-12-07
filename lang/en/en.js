@@ -441,7 +441,8 @@ UE.I18N['en'] = {
         'richText':"Rich Text",
         'richText':"Rich Text",
         'scPapers':"Scientific Papers",
-        'squareNumber':"Square Serial Number"
+        'squareNumber':"Square Serial Number",
+        'scroll':"Rolling Region"
     },
     'scrawl':{
         'static':{
