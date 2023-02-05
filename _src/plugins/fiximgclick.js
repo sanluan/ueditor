@@ -309,8 +309,6 @@ UE.plugins['fiximgclick'] = (function () {
                     if (imageScale && imageScale.resizer.style.display != 'none') {
                         imageScale.hide();
                     }
-                    var range = new dom.Range(me.document);
-                    range.selectNode(e.target);
                 }
             });
         }
