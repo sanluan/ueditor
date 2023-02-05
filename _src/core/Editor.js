@@ -554,7 +554,12 @@
 
                     } else {
                         try {
-                            me._bakRange && me._bakRange.select();
+                            if ( me._bakRange ) {
+                                var node = me._bakRange.getClosedNode();
+                                if( !(node && img.tagName == "IMG" && "true" ==  node.getAttribute("data-scale") )) {
+                                    me._bakRange.select();
+                                }
+                            }
                         } catch (e) {
                         }
                     }

@@ -261,7 +261,6 @@ UE.plugins['fiximgclick'] = (function () {
 
                         var _keyDownHandler = function (e) {
                             imageScale.hide();
-                            if(imageScale.target) me.selection.getRange().selectNode(imageScale.target).select();
                         }, _mouseDownHandler = function (e) {
                             var ele = e.target || e.srcElement;
                             if (ele && (ele.className===undefined || ele.className.indexOf('edui-editor-imagescale') == -1)) {
@@ -275,16 +274,14 @@ UE.plugins['fiximgclick'] = (function () {
                             domUtils.on(document, 'keydown', _keyDownHandler);
                             domUtils.on(document,'mousedown', _mouseDownHandler);
                             me.selection.getNative().removeAllRanges();
+                            img.setAttribute("data-scale","true");
                         });
                         me.addListener('afterscalehide', function (e) {
                             me.removeListener('beforekeydown', _keyDownHandler);
                             me.removeListener('beforemousedown', _mouseDownHandler);
                             domUtils.un(document, 'keydown', _keyDownHandler);
                             domUtils.un(document,'mousedown', _mouseDownHandler);
-                            var target = imageScale.target;
-                            if (target.parentNode) {
-                                me.selection.getRange().selectNode(target).select();
-                            }
+                            img.removeAttribute("data-scale");
                         });
                         //TODO 有iframe的情况，mousedown不能往下传。。
                         domUtils.on(imageScale.resizer, 'mousedown', function (e) {
@@ -293,7 +290,6 @@ UE.plugins['fiximgclick'] = (function () {
                             if (ele && ele.className.indexOf('edui-editor-imagescale-hand') == -1) {
                                 timer = setTimeout(function () {
                                     imageScale.hide();
-                                    if(imageScale.target) me.selection.getRange().selectNode(ele).select();
                                 }, 200);
                             }
                         });
