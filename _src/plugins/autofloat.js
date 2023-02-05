@@ -89,6 +89,18 @@ UE.plugins['autofloat'] = function() {
 
     me.addListener('destroy',function(){
         domUtils.un(window, ['scroll','resize'], updateFloating);
+        var parents = domUtils.findParents( me.container, false, function ( node ) {
+             var overflow = node.style.overflow;
+             var overflowY = node.style.overflowY;
+             return "auto" == overflow || "scroll" == overflow || "auto" == overflowY || "scroll" == overflowY;
+        });
+        if(parents){
+            for (var i = 0; parent = parents[i++];) {
+                if(window!=parent){
+                    domUtils.un(parent, ['scroll','resize'], updateFloating);
+                }
+            }
+        }
         me.removeListener('keydown', defer_updateFloating);
     });
 
@@ -107,6 +119,18 @@ UE.plugins['autofloat'] = function() {
                 fixIE6FixedPos();
             }
             domUtils.on(window, ['scroll','resize'], updateFloating);
+            var parents = domUtils.findParents( me.container, false, function ( node ) {
+                 var overflow = node.style.overflow;
+                 var overflowY = node.style.overflowY;
+                 return "auto" == overflow || "scroll" == overflow || "auto" == overflowY || "scroll" == overflowY;
+            });
+            if(parents){
+                for (var i = 0; parent = parents[i++];) {
+                    if(window!=parent){
+                        domUtils.on(parent, ['scroll','resize'], updateFloating);
+                    }
+                }
+            }
             me.addListener('keydown', defer_updateFloating);
 
             me.addListener('beforefullscreenchange', function (t, enabled){

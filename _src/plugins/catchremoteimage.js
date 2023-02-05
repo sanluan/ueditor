@@ -49,7 +49,7 @@ UE.plugins['catchremoteimage'] = function () {
             }
             if(ci.nodeName == "IMG"){
                 var src = ci.getAttribute("_src") || ci.src || "";
-                if (/^(https?|ftp):/i.test(src) && !test(src, catcherLocalDomain)) {
+                if (/^(https?|ftp):/i.test(src) && !test(src, catcherLocalDomain) && src.indexOf(catcherUrlPrefix) === -1) {
                     remoteImages.push(src);
                     // 添加上传时的uploading动画
                     domUtils.setAttributes(ci, {
@@ -61,7 +61,7 @@ UE.plugins['catchremoteimage'] = function () {
             } else {
                 // 获取背景图片url
                 var backgroundImageurl = ci.style.cssText.replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
-                if (/^(https?|ftp):/i.test(backgroundImageurl) && !test(backgroundImageurl, catcherLocalDomain)) {
+                if (/^(https?|ftp):/i.test(backgroundImageurl) && !test(backgroundImageurl, catcherLocalDomain) && src.indexOf(catcherUrlPrefix) === -1) {
                     remoteImages.push(backgroundImageurl);
                     ci.style.cssText = ci.style.cssText.replace(backgroundImageurl, loadingIMG);
                     domUtils.setAttributes(ci, {

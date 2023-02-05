@@ -46,7 +46,7 @@ UE.plugins['fiximgclick'] = (function () {
                     me.hide();
                 });
 
-                for (i = 0; i < 8; i++) {
+                for (i = 0; i < 10; i++) {
                     hands.push('<span class="edui-editor-imagescale-hand' + i + '"></span>');
                 }
                 resizer.id = me.editor.ui.id + '_imagescale';
@@ -63,6 +63,7 @@ UE.plugins['fiximgclick'] = (function () {
             initStyle: function () {
                 utils.cssRule('imagescale', '.edui-editor-imagescale{display:none;position:absolute;border:1px solid #38B2CE;cursor:hand;-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box;}' +
                     '.edui-editor-imagescale span{position:absolute;width:6px;height:6px;overflow:hidden;font-size:0px;display:block;background-color:#3C9DD0;}'
+                    + '.edui-editor-imagescale .edui-editor-imagescale-hand8,.edui-editor-imagescale .edui-editor-imagescale-hand9{background-color: #fff;border-color:#3C9DD0;border-width:1px;width:5px;height:5px;border-style: solid;}'
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand0{cursor:nw-resize;top:0;margin-top:-4px;left:0;margin-left:-4px;}'
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand1{cursor:n-resize;top:0;margin-top:-4px;left:50%;margin-left:-4px;}'
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand2{cursor:ne-resize;top:0;margin-top:-4px;left:100%;margin-left:-3px;}'
@@ -70,7 +71,9 @@ UE.plugins['fiximgclick'] = (function () {
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand4{cursor:e-resize;top:50%;margin-top:-4px;left:100%;margin-left:-3px;}'
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand5{cursor:sw-resize;top:100%;margin-top:-3px;left:0;margin-left:-4px;}'
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand6{cursor:s-resize;top:100%;margin-top:-3px;left:50%;margin-left:-4px;}'
-                    + '.edui-editor-imagescale .edui-editor-imagescale-hand7{cursor:se-resize;top:100%;margin-top:-3px;left:100%;margin-left:-3px;}');
+                    + '.edui-editor-imagescale .edui-editor-imagescale-hand7{cursor:se-resize;top:100%;margin-top:-3px;left:100%;margin-left:-3px;}'
+                    + '.edui-editor-imagescale .edui-editor-imagescale-hand8{cursor:w-resize;top:25%;margin-top:-4px;left:0;margin-left:-4px;}'
+                    + '.edui-editor-imagescale .edui-editor-imagescale-hand9{cursor:e-resize;top:25%;margin-top:-4px;left:100%;margin-left:-3px;}');
             },
             initEvents: function () {
                 var me = this;
@@ -132,22 +135,28 @@ UE.plugins['fiximgclick'] = (function () {
             updateContainerStyle: function (dir, offset) {
                 var me = this,
                     dom = me.resizer, tmp;
-
-                if (rect[dir][0] != 0) {
-                    tmp = parseInt(dom.style.left) + offset.x;
-                    dom.style.left = me._validScaledProp('left', tmp) + 'px';
-                }
-                if (rect[dir][1] != 0) {
-                    tmp = parseInt(dom.style.top) + offset.y;
-                    dom.style.top = me._validScaledProp('top', tmp) + 'px';
-                }
-                if (rect[dir][2] != 0) {
-                    tmp = dom.clientWidth + rect[dir][2] * offset.x;
-                    dom.style.width = me._validScaledProp('width', tmp) + 'px';
-                }
-                if (rect[dir][3] != 0) {
-                    tmp = dom.clientHeight + rect[dir][3] * offset.y;
-                    dom.style.height = me._validScaledProp('height', tmp) + 'px';
+                if (8 > dir ){
+                    if (rect[dir][0] != 0) {
+                        tmp = parseInt(dom.style.left) + offset.x;
+                        dom.style.left = me._validScaledProp('left', tmp) + 'px';
+                    }
+                    if (rect[dir][1] != 0) {
+                        tmp = parseInt(dom.style.top) + offset.y;
+                        dom.style.top = me._validScaledProp('top', tmp) + 'px';
+                    }
+                    if (rect[dir][2] != 0) {
+                        tmp = dom.clientWidth + rect[dir][2] * offset.x;
+                        dom.style.width = me._validScaledProp('width', tmp) + 'px';
+                    }
+                    if (rect[dir][3] != 0) {
+                        tmp = dom.clientHeight + rect[dir][3] * offset.y;
+                        dom.style.height = me._validScaledProp('height', tmp) + 'px';
+                    }
+                } else {
+                    tmpW = dom.clientWidth + (8 == dir ? -1 : 1) * offset.x;
+                    tmpH = Math.round(tmpW / (dom.clientWidth / dom.clientHeight) );
+                    dom.style.width = me._validScaledProp('width', tmpW) + 'px';
+                    dom.style.height = me._validScaledProp('height', tmpH) + 'px';
                 }
             },
             _validScaledProp: function (prop, value) {
@@ -239,7 +248,7 @@ UE.plugins['fiximgclick'] = (function () {
                 var range = me.selection.getRange(),
                     img = range.getClosedNode();
 
-                if (img && img.tagName == 'IMG' && me.body.contentEditable!="false") {
+                if (img && img.tagName == 'IMG' && e.target == img && me.body.contentEditable!="false") {
 
                     if (img.getAttribute("anchorname") ||
                         domUtils.hasClass(img, 'loadingclass') ||
@@ -297,7 +306,11 @@ UE.plugins['fiximgclick'] = (function () {
                     }
                     imageScale.show(img);
                 } else {
-                    if (imageScale && imageScale.resizer.style.display != 'none') imageScale.hide();
+                    if (imageScale && imageScale.resizer.style.display != 'none') {
+                        imageScale.hide();
+                    }
+                    var range = new dom.Range(me.document);
+                    range.selectNode(e.target);
                 }
             });
         }

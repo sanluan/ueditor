@@ -255,10 +255,10 @@
                         if (img.className.indexOf("edui-faked-video") != -1 || img.className.indexOf("edui-upload-video") != -1) {
                             dialogName = "insertvideoDialog"
                         }
-                        if (img.src.indexOf("http://api.map.baidu.com") != -1) {
+                        if (img.src.indexOf("https://api.map.baidu.com") != -1) {
                             dialogName = "mapDialog"
                         }
-                        if (img.src.indexOf("http://maps.google.com/maps/api/staticmap") != -1) {
+                        if (img.src.indexOf("https://maps.google.com/maps/api/staticmap") != -1) {
                             dialogName = "gmapDialog"
                         }
                         if (img.getAttribute("anchorname")) {
