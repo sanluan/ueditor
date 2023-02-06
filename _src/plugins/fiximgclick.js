@@ -72,8 +72,8 @@ UE.plugins['fiximgclick'] = (function () {
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand5{cursor:sw-resize;top:100%;margin-top:-3px;left:0;margin-left:-4px;}'
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand6{cursor:s-resize;top:100%;margin-top:-3px;left:50%;margin-left:-4px;}'
                     + '.edui-editor-imagescale .edui-editor-imagescale-hand7{cursor:se-resize;top:100%;margin-top:-3px;left:100%;margin-left:-3px;}'
-                    + '.edui-editor-imagescale .edui-editor-imagescale-hand8{cursor:w-resize;top:25%;margin-top:-4px;left:0;margin-left:-4px;}'
-                    + '.edui-editor-imagescale .edui-editor-imagescale-hand9{cursor:e-resize;top:25%;margin-top:-4px;left:100%;margin-left:-3px;}');
+                    + '.edui-editor-imagescale .edui-editor-imagescale-hand8{cursor:sw-resize;top:100%;margin-top:-16px;left:0;margin-left:-4px;}'
+                    + '.edui-editor-imagescale .edui-editor-imagescale-hand9{cursor:se-resize;top:100%;margin-top:-16px;left:100%;margin-left:-3px;}');
             },
             initEvents: function () {
                 var me = this;
