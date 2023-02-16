@@ -427,7 +427,7 @@
 			ul:     ['class', 'style'],
 			video:  ['poster', 'autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style'],
 			embed:  ['type', 'class', 'width', 'height', 'allowscriptaccess', 'loop', 'play', 'menu', 'wmode', 'src', 'pluginspage', 'allowfullscreen'],
-			iframe: ['frameborder','border','style', 'marginwidth','marginheight','width','height','src','id']
+			iframe: ['frameborder','border','style', 'marginwidth','marginheight','width','height','class','src','id']
 		}
     };
 
