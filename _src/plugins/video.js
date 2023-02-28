@@ -31,7 +31,7 @@ UE.plugins['video'] = function (){
         switch (type){
             case 'image':
                 str = '<img ' + (id ? 'id="' + id+'"' : '') + (poster ? ' poster="' + poster + '"': '') +  ' width="'+ width +'" height="' + height + '" _url="'+url+'" class="' + classname.replace(/\bvideo-js\b/, '') + '"'  +
-                    ' src="' + me.options.UEDITOR_HOME_URL+'themes/default/images/spacer.gif" style="background-image:url('+me.options.UEDITOR_HOME_URL+'themes/default/images/videologo.gif)'+(poster ? ' ,url(' + poster + ')': '')+';background-repeat:no-repeat,no-repeat;background-position: center center,center center;background-size: auto,contain;border:1px solid gray;'+(align ? 'float:' + align + ';': '')+'" />'
+                    ' src="' + me.options.UEDITOR_BASE_URL+'themes/default/images/spacer.gif" style="background-image:url('+me.options.UEDITOR_BASE_URL+'themes/default/images/videologo.gif)'+(poster ? ' ,url(' + poster + ')': '')+';background-repeat:no-repeat,no-repeat;background-position: center center,center center;background-size: auto,contain;border:1px solid gray;'+(align ? 'float:' + align + ';': '')+'" />'
                 break;
             case 'embed':
                 str = '<embed type="application/x-shockwave-flash" class="' + classname + '" pluginspage="http://www.macromedia.com/go/getflashplayer"' +

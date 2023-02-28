@@ -681,7 +681,7 @@
             this.getDom('toolbarmsg').style.display = 'none';
         },
         mapUrl:function (url) {
-            return url ? url.replace('~/', this.editor.options.UEDITOR_HOME_URL || '') : ''
+            return url ? url.replace('~/', this.editor.options.UEDITOR_BASE_URL || '') : ''
         },
         triggerLayout:function () {
             var dom = this.getDom();

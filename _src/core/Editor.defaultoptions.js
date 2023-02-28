@@ -2,12 +2,13 @@
 UE.Editor.defaultOptions = function(editor){
 
     var _url = editor.options.UEDITOR_HOME_URL;
+    var _base = editor.options.UEDITOR_BASE_URL;
     return {
         isShow: true,
         initialContent: '',
         initialStyle:'',
         autoClearinitialContent: false,
-        iframeCssUrl: _url + 'themes/iframe.css',
+        iframeCssUrl: _base + 'themes/iframe.css',
         textarea: 'editorValue',
         focus: false,
         focusInEnd: true,
@@ -19,9 +20,9 @@ UE.Editor.defaultOptions = function(editor){
         enterTag: 'p',
         customDomain: false,
         lang: 'zh-cn',
-        langPath: _url + 'lang/',
+        langPath: _base + 'lang/',
         theme: 'default',
-        themePath: _url + 'themes/',
+        themePath: _base + 'themes/',
         allHtmlEnabled: false,
         scaleEnabled: false,
         tableNativeEditInFF: false,
