@@ -193,7 +193,7 @@ UE.plugins['autotypeset'] = function(){
                 //图片宽度设定
                 if(opt.imageWidth && !domUtils.getStyle(ci,'width')){
                     var img = ci;
-                    if(img.width > (parseInt(opt.imageWidth) / 4)){
+                    if(img.width > opt.imageWidth){
                         domUtils.setStyle(img,'width',opt.imageWidth+'px');
                         domUtils.setStyle(img,'height','auto');
                     }
