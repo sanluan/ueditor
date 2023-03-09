@@ -13,7 +13,7 @@ UE.parse.register('list',function(utils){
 
 
     utils.extend(this,{
-        liiconpath : 'http://bs.baidu.com/listicon/',
+        liiconpath : this.rootPath,
         listDefaultPaddingLeft : '40'
     });
 
