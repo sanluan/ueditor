@@ -13,7 +13,7 @@ UE.parse.register('list',function(utils){
 
 
     utils.extend(this,{
-        liiconpath : this.rootPath,
+        liiconpath : this.rootPath +'themes/ueditor-list/',
         listDefaultPaddingLeft : '40'
     });
 
