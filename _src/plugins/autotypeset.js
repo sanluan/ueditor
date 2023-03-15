@@ -182,7 +182,7 @@ UE.plugins['autotypeset'] = function(){
                 }
                 domUtils.removeAttributes(ci,['class']);
             }
-            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion')){
+            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && !ci.getAttribute('word_img')){
                 //清理宽度高度
                 if(opt.removeImageSize){
                     domUtils.removeStyle(ci,'width');
