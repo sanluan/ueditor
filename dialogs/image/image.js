@@ -69,7 +69,7 @@
     function initButtons() {
 
         dialog.onok = function () {
-            var remote = false, list = [], id, tabs = $G('tabhead').children;
+            var list = [], id, tabs = $G('tabhead').children;
             for (var i = 0; i < tabs.length; i++) {
                 if (domUtils.hasClass(tabs[i], 'focus')) {
                     id = tabs[i].getAttribute('data-content-id');
@@ -79,7 +79,6 @@
 
             switch (id) {
                 case 'remote':
-                    remote=true;
                     list = remoteImage.getInsertList();
                     break;
                 case 'upload':
@@ -97,7 +96,6 @@
 
             if(list) {
                 editor.execCommand('insertimage', list);
-                remote && editor.fireEvent("catchRemoteImage");
             }
         };
     }
