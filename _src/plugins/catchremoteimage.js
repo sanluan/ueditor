@@ -8,7 +8,19 @@
 UE.plugins['catchremoteimage'] = function () {
     var me = this,
         ajax = UE.ajax;
-
+    function test(src, urls) {
+        if (src.indexOf(location.host) != -1 || /(^\.)|(^\/)/.test(src)) {
+            return true;
+        }
+        if (urls) {
+            for (var j = 0, url; url = urls[j++];) {
+                if (src.indexOf(url) !== -1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
     /* 设置默认值 */
     if (me.options.catchRemoteImageEnable === false) return;
     me.setOpt({
@@ -28,20 +40,7 @@ UE.plugins['catchremoteimage'] = function () {
 
         var remoteImages = [],
             loadingIMG =  me.options.themePath + me.options.theme + '/images/spacer.gif',
-            imgs = me.document.querySelectorAll('[style*="url"],img'),
-            test = function (src, urls) {
-                if (src.indexOf(location.host) != -1 || /(^\.)|(^\/)/.test(src)) {
-                    return true;
-                }
-                if (urls) {
-                    for (var j = 0, url; url = urls[j++];) {
-                        if (src.indexOf(url) !== -1) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
+            imgs = me.document.querySelectorAll('[style*="url"],img');
 
         for (var i = 0, ci; ci = imgs[i++];) {
             if (ci.getAttribute("word_img")) {
@@ -160,4 +159,34 @@ UE.plugins['catchremoteimage'] = function () {
         }
 
     });
+
+    me.commands['catchremoteimage'] = {
+        execCommand:function () {
+            me.fireEvent("catchRemoteImage");
+        },
+        queryCommandState : function() {
+            var opt = me.options;
+            if(false !== opt.catchRemoteImageEnable){
+                var imgs = me.document.querySelectorAll('[style*="url"],img');
+                for (var i = 0, ci; ci = imgs[i++];) {
+                    if (ci.getAttribute("word_img")) {
+                        continue;
+                    }
+                    if(ci.nodeName == "IMG"){
+                        var src = ci.getAttribute("_src") || ci.src || "";
+                        if (/^(https?|ftp):/i.test(src) && !test(src, opt.catcherLocalDomain) && src.indexOf(opt.catcherUrlPrefix) === -1) {
+                            return 0;
+                        }
+                    } else {
+                        // 获取背景图片url
+                        var backgroundImageurl = ci.style.cssText.replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
+                        if (/^(https?|ftp):/i.test(backgroundImageurl) && !test(backgroundImageurl, opt.catcherLocalDomain) && src.indexOf(opt.catcherUrlPrefix) === -1) {
+                            return 0;
+                        }
+                    }
+                }
+            }
+            return -1;
+        }
+    };
 };

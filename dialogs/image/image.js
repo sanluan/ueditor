@@ -79,6 +79,7 @@
 
             switch (id) {
                 case 'remote':
+                    remote=true;
                     list = remoteImage.getInsertList();
                     break;
                 case 'upload':
