@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = function (grunt) {
-
     var fs = require("fs"),
         Util = {
 
@@ -18,12 +17,10 @@ module.exports = function (grunt) {
                 sources.forEach(function (filepath, index) {
                     sources[ index ] = basePath + filepath;
                 });
-
                 return sources;
             },
 
             fetchStyles: function () {
-
                 var sources = fs.readFileSync(this.cssBasePath + "ueditor.css"),
                     filepath = null,
                     pattern = /@import\s+([^;]+)*;/g,
@@ -32,24 +29,18 @@ module.exports = function (grunt) {
                 while (filepath = pattern.exec(sources)) {
                     src.push(this.cssBasePath + filepath[ 1 ].replace(/'|"/g, ""));
                 }
-
                 return src;
-
             }
-
         },
         packageJson = grunt.file.readJSON('package.json'),
         encode = grunt.option('encode') || 'utf8',
         disDir = "dist/",
-        banner = '/*!\n * UEditor\n * version: ' + packageJson.name + '\n * build: <%= new Date() %>\n */\n\n';
+        banner = '/*!\n * UEditor\n * version: ' + packageJson.name + '\n * version: '+ packageJson.version+'\n */\n\n';
 
     //init
     (function () {
-
         encode = typeof encode === "string" ? encode.toLowerCase() : 'utf8';
-
-        disDir = 'dist/' + encode + '/';
-
+        disDir = 'dist/' + packageJson.name + '-'+packageJson.version+'/';
     })();
 
     grunt.initConfig({
@@ -126,7 +117,6 @@ module.exports = function (grunt) {
             }
         },
         transcoding: {
-
             options: {
                 charset: encode
             },
@@ -134,17 +124,6 @@ module.exports = function (grunt) {
 
         },
         replace: {
-
-            fileEncode: {
-                src: [ disDir + '**/*.html', disDir + 'dialogs/**/*.js', disDir + '**/*.css' ],
-                overwrite: true,
-                replacements: [
-                    {
-                        from: /utf-8/gi,
-                        to: 'gbk'
-                    }
-                ]
-            },
             demo: {
                 src: disDir + 'index.html',
                 overwrite: true,
@@ -159,12 +138,10 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-
         },
         clean: {
             build: {
                 src: [
-                    disDir + "*/upload",
                     disDir + ".DS_Store",
                     disDir + "**/.DS_Store",
                     disDir + ".git",
@@ -172,7 +149,6 @@ module.exports = function (grunt) {
                 ]
             }
         }
-
     });
 
     grunt.loadNpmTasks('grunt-text-replace');
@@ -184,41 +160,22 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerTask('default', 'UEditor build', function () {
-
         var tasks = [ 'concat', 'cssmin', 'uglify', 'copy:base', 'copy:demo', 'replace:demo', 'clean' ];
-
-        if (encode === 'gbk') {
-            tasks.push('replace:fileEncode');
-        }
-
         tasks.push('transcoding');
-
         //config修改
         updateConfigFile();
-
         grunt.task.run(tasks);
-
     });
 
 
     function updateConfigFile() {
-
         var filename = 'ueditor.config.js',
             file = grunt.file.read(filename);
-
-        if (encode == 'gbk') {
-            file = file.replace(/utf-8/gi, 'gbk');
-        }
-
         //写入到dist
         if (grunt.file.write(disDir + filename, file)) {
-
             grunt.log.writeln('config file update success');
-
         } else {
             grunt.log.warn('config file update error');
         }
-
     }
-
 };
