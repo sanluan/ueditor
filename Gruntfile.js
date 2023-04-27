@@ -35,7 +35,7 @@ module.exports = function (grunt) {
         packageJson = grunt.file.readJSON('package.json'),
         encode = grunt.option('encode') || 'utf8',
         disDir = "dist/",
-        banner = '/*!\n * UEditor\n * version: ' + packageJson.name + '\n * version: '+ packageJson.version+'\n */\n\n';
+        banner = '/*!\n * UEditor\n * version: ' + packageJson.name + '-'+ packageJson.version+'\n */\n\n';
 
     //init
     (function () {

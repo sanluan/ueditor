@@ -1,11 +1,15 @@
+让UEditor重新散发活力的硬核更新版本来啦！
 
-=====
-## 修改记录
+与原版1.4.4保持最大程度兼容,不改图标！
+
+支持word、wps文档复制粘贴图片自动转存
+
+##v1.4.5 修改记录
 
 1. 文件上传取消flash
 1. 表情、列表图片素材本地化
 1. 增加日文翻译
-1. 增加word文档复制图片自动上传
+1. 增加word、wps文档复制图片自动上传
 1. 增加base64图片自动转存
 1. 移除截图工具
 1. 移除webapp、音乐、图片搜索等失效功能
@@ -36,7 +40,7 @@ UEditor是由百度web前端研发部开发所见即所得富文本web编辑器�
 
 ### 第一步：下载编辑器 ###
 
-到官网下载ueditor最新版：[[官网地址]](http://ueditor.baidu.com/website/download.html#ueditor "官网下载地址")
+到官网下载ueditor最新版：[[GITEE地址]](https://gitee.com/sanluan/ueditor/releases/download/v1.4.5/ueditor-1.4.5.zip "GITEE下载地址")
 
 ### 第二步：创建demo文件 ###
 解压下载的包，在解压后的目录创建demo.html文件，填入下面的html代码
@@ -95,8 +99,6 @@ ue.ready(function(){
 });
 ```
 
-ueditor的更多API请看[API 文档](http://ueditor.baidu.com/doc "ueditor API 文档")
-
 ## 相关链接 ##
 
 ueditor 官网：[http://ueditor.baidu.com](http://ueditor.baidu.com "ueditor 官网")
@@ -105,12 +107,3 @@ ueditor API 文档：[http://ueditor.baidu.com/doc](http://ueditor.baidu.com/doc
 
 ueditor github 地址：[http://github.com/fex-team/ueditor](http://github.com/fex-team/ueditor "ueditor github 地址")
 
-## 详细文档
-
-ueditor 文档：[http://fex.baidu.com/ueditor/](http://fex.baidu.com/ueditor/)
-
-
-## 联系我们 ##
-
-email：[ueditor@baidu.com](mailto://email:ueditor@baidu.com "发邮件给ueditor开发组")
-issue：[github issue](http://github.com/fex-team/ueditor/issues "ueditor 论坛")
