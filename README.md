@@ -1,10 +1,11 @@
+## 介绍
 让UEditor重新散发活力的硬核更新版本来啦！
 
 与原版1.4.4保持最大程度兼容,不改图标！
 
-支持word、wps文档复制粘贴图片自动转存
+支持word、wps文档复制粘贴图片自动上传
 
-##v1.4.5 修改记录
+## v1.4.5 修改记录
 
 1. 文件上传取消flash
 1. 表情、列表图片素材本地化
@@ -98,12 +99,3 @@ ue.ready(function(){
     var txt = ue.getContentTxt();
 });
 ```
-
-## 相关链接 ##
-
-ueditor 官网：[http://ueditor.baidu.com](http://ueditor.baidu.com "ueditor 官网")
-
-ueditor API 文档：[http://ueditor.baidu.com/doc](http://ueditor.baidu.com/doc "ueditor API 文档")
-
-ueditor github 地址：[http://github.com/fex-team/ueditor](http://github.com/fex-team/ueditor "ueditor github 地址")
-
