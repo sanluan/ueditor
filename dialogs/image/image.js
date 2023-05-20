@@ -114,7 +114,7 @@
 
     /* 设置对齐方式 */
     function setAlign(align){
-        align = align || 'none';
+        align = align || 'center';
         var aligns = $G("alignIcon").children;
         for(i = 0; i < aligns.length; i++){
             if(aligns[i].getAttribute('data-align') == align) {
@@ -127,7 +127,7 @@
     }
     /* 获取对齐方式 */
     function getAlign(){
-        var align = $G("align").value || 'none';
+        var align = $G("align").value || 'center';
         return align == 'none' ? '':align;
     }
 

@@ -182,7 +182,7 @@ UE.plugins['autotypeset'] = function(){
                 }
                 domUtils.removeAttributes(ci,['class']);
             }
-            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && !ci.getAttribute('word_img')){
+            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && !ci.getAttribute('word_img') && -1==img.className.indexOf("anchorclass")){
                 //清理宽度高度
                 if(opt.removeImageSize){
                     domUtils.removeStyle(ci,'width');
@@ -200,7 +200,7 @@ UE.plugins['autotypeset'] = function(){
                 }
             }
             //表情不处理
-            if(opt.imageBlockLine && ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion')){
+            if(opt.imageBlockLine && ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && -1==img.className.indexOf("anchorclass") ){
                 if(html){
                     var img = ci;
                     switch (opt.imageBlockLine){

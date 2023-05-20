@@ -222,9 +222,6 @@ UE.commands['insertimage'] = {
             var first = opt.shift();
             var floatStyle = first['floatStyle'];
             delete first['floatStyle'];
-////                img.style.border = (first.border||0) +"px solid #000";
-////                img.style.margin = (first.margin||0) +"px";
-//                img.style.cssText += ';margin:' + (first.margin||0) +"px;" + 'border:' + (first.border||0) +"px solid #000";
             domUtils.setAttributes(img, first);
             me.execCommand('imagefloat', floatStyle);
             if (opt.length > 0) {
@@ -264,7 +261,6 @@ UE.commands['insertimage'] = {
                     html.push(str);
                 }
             }
-
             me.execCommand('insertHtml', html.join(''));
         }
 
