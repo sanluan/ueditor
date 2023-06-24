@@ -23,6 +23,7 @@ UE.plugins['autotypeset'] = function(){
         removeEmptyline: false,         //去掉空行
         removeSpace:false,              //去掉空格
         textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
+        ignoreCaption:false,            //忽略图片后面的说明
         imageBlockLine: "center",       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
         removeImageSize:false,          //清除图片尺寸
         imageWidth: "",                 //图片的宽度
@@ -37,10 +38,16 @@ UE.plugins['autotypeset'] = function(){
         removeEmptyNode: false,         // 去掉空节点
         //可以去掉的标签
         removeTagNames: utils.extend({div:1},dtd.$removeEmpty),
-        indent: false,                  // 行首缩进
+        indent: false,                  //行首缩进
         indentValue : '2em',            //行首缩进的大小
-        bdc2sb: false,
-        tobdc: false
+        bdc2sb: false,                  //全角转半角
+        tobdc: false,                   //半角转全角
+        hcenterh1: false,               //标题居中
+        hcenterh2: false,
+        hcenterh3: false,
+        hcenterh4: false,
+        hcenterh5: false,
+        hcenterh6: false
     }});
 
     var me = this,
@@ -61,6 +68,7 @@ UE.plugins['autotypeset'] = function(){
             blockquote:1,center:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,
             span:1
         },
+        titleElement = {h1:1,h2:1,h3:1,h4:1,h5:1,h6:1},
         highlightCont;
     //升级了版本，但配置项目里没有autotypeset
     if(!opt){
@@ -108,6 +116,7 @@ UE.plugins['autotypeset'] = function(){
             cont = me.document.body;
         }
         var nodes = domUtils.getElementsByTagName(cont,'*');
+        var lastImage = false;
 
         // 行首缩进，段落方向，段间距，段内间距
         for(var i=0,ci;ci=nodes[i++];){
@@ -161,8 +170,11 @@ UE.plugins['autotypeset'] = function(){
                 if(opt.indent){
                     ci.style.textIndent = opt.indentValue;
                 }
-                if(opt.textAlign){
+                if(opt.textAlign && !(opt.ignoreCaption && ci.tagName=='P' && lastImage)){
                     ci.style.textAlign = opt.textAlign;
+                }
+                if(titleElement[ci.tagName.toLowerCase()] && opt["hcenter"+ci.tagName.toLowerCase()]){
+                    ci.style.textAlign = "center";
                 }
                 if(opt.lineheight){
                     ci.style.lineHeight = (opt.lineheight == "1" ? "normal" : opt.lineheight + 'em') ;
@@ -182,7 +194,8 @@ UE.plugins['autotypeset'] = function(){
                 }
                 domUtils.removeAttributes(ci,['class']);
             }
-            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && !ci.getAttribute('word_img') && -1==img.className.indexOf("anchorclass")){
+            if(ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && !ci.getAttribute('word_img') && -1==ci.className.indexOf("anchorclass")){
+                lastImage = true;
                 //清理宽度高度
                 if(opt.removeImageSize){
                     domUtils.removeStyle(ci,'width');
@@ -198,9 +211,11 @@ UE.plugins['autotypeset'] = function(){
                         domUtils.setStyle(img,'height','auto');
                     }
                 }
+            } else {
+                lastImage = false;
             }
             //表情不处理
-            if(opt.imageBlockLine && ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && -1==img.className.indexOf("anchorclass") ){
+            if(opt.imageBlockLine && ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion') && -1==ci.className.indexOf("anchorclass") ){
                 if(html){
                     var img = ci;
                     switch (opt.imageBlockLine){
