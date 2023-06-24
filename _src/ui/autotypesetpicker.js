@@ -64,6 +64,7 @@
             for(var i=1;i<=6;i++){
                 hCenterHtml += '<label><input type="checkbox" name="hcenterh' + i +'" '+ (opt["hcenterh"+i] ? "checked" : "") + '>' + me.getLang("paragraph")['h'+i] + '</label>';
             }
+            hCenterHtml += '<label><input type="checkbox" name="captionCenter"' + (opt["captionCenter"] ? "checked" : "") + '>' + lang.captionCenter + '</label>';
 
             var textAlignInputName = 'textAlignValue' + me.uid,
                 imageBlockInputName = 'imageBlockLineValue' + me.uid,
@@ -75,15 +76,11 @@
                 '<tr><td nowrap><label><input type="checkbox" name="mergeEmptyline" ' + (opt["mergeEmptyline"] ? "checked" : "" ) + '>' + lang.mergeLine + '</label></td><td colspan="2"><label><input type="checkbox" name="removeEmptyline" ' + (opt["removeEmptyline"] ? "checked" : "" ) + '>' + lang.delLine + '</label></td></tr>' +
                 '<tr><td nowrap><label><input type="checkbox" name="removeClass" ' + (opt["removeClass"] ? "checked" : "" ) + '>' + lang.removeFormat + '</label></td><td colspan="2"><label><input type="checkbox" name="indent" ' + (opt["indent"] ? "checked" : "" ) + '>' + lang.indent + '</label>&nbsp;<label><input type="checkbox" name="removeSpace" ' + (opt["removeSpace"] ? "checked" : "" ) + '>' + lang.removeSpace + '</label></td></tr>' +
                 '<tr>' +
-                '<td nowrap rowspan="2"><label><input type="checkbox" name="textAlign" ' + (opt["textAlign"] ? "checked" : "" ) + '>' + lang.alignment + '</label></td>' +
+                '<td nowrap><label><input type="checkbox" name="textAlign" ' + (opt["textAlign"] ? "checked" : "" ) + '>' + lang.alignment + '</label></td>' +
                 '<td colspan="2" id="' + textAlignInputName + '">' +
                 '<label><input type="radio" name="'+ textAlignInputName +'" value="left" ' + ((opt["textAlign"] && opt["textAlign"] == "left") ? "checked" : "") + '>' + me.getLang("justifyleft") + '</label>' +
                 '<label><input type="radio" name="'+ textAlignInputName +'" value="center" ' + ((opt["textAlign"] && opt["textAlign"] == "center") ? "checked" : "") + '>' + me.getLang("justifycenter") + '</label>' +
                 '<label><input type="radio" name="'+ textAlignInputName +'" value="right" ' + ((opt["textAlign"] && opt["textAlign"] == "right") ? "checked" : "") + '>' + me.getLang("justifyright") + '</label>' +
-                '</td>' +
-                '<tr>' +
-                '<td>' +
-                '<label><input type="checkbox" name="ignoreCaption"' + (opt["ignoreCaption"] ? "checked" : "") + '>' + lang.ignoreCaption + '</label>' +
                 '</td>' +
                 '</tr>' +
                 '<tr>' +

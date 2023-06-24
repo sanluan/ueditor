@@ -23,7 +23,6 @@ UE.plugins['autotypeset'] = function(){
         removeEmptyline: false,         //去掉空行
         removeSpace:false,              //去掉空格
         textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
-        ignoreCaption:false,            //忽略图片后面的说明
         imageBlockLine: "center",       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
         removeImageSize:false,          //清除图片尺寸
         imageWidth: "",                 //图片的宽度
@@ -47,7 +46,8 @@ UE.plugins['autotypeset'] = function(){
         hcenterh3: false,
         hcenterh4: false,
         hcenterh5: false,
-        hcenterh6: false
+        hcenterh6: false,
+        captionCenter:false,            //图片后面的说明居中
     }});
 
     var me = this,
@@ -170,8 +170,11 @@ UE.plugins['autotypeset'] = function(){
                 if(opt.indent){
                     ci.style.textIndent = opt.indentValue;
                 }
-                if(opt.textAlign && !(opt.ignoreCaption && ci.tagName=='P' && lastImage)){
+                if(opt.textAlign){
                     ci.style.textAlign = opt.textAlign;
+                }
+                if(opt.captionCenter && ci.tagName=='P' && lastImage){
+                    ci.style.textAlign = "center";
                 }
                 if(titleElement[ci.tagName.toLowerCase()] && opt["hcenter"+ci.tagName.toLowerCase()]){
                     ci.style.textAlign = "center";
