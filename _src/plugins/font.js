@@ -381,9 +381,8 @@ UE.plugins['font'] = function () {
                                 me.execCommand('removeFormat', 'span,a', style);
                             }
                             range = me.selection.getRange();
-
-                            range.applyInlineStyle('span', {'style': style + ':' + value});
                             mergesibling(range, cmdName,value);
+                            range.applyInlineStyle('span', {'style': style + ':' + value});
                             range.select();
                         } else {
 
