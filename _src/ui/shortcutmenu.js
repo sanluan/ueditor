@@ -67,17 +67,6 @@
                 }
             });
 
-            //ie\ff下 mouseout不准
-            if (browser.chrome) {
-                domUtils.on (doc , "mouseout" , function (e) {
-                    var relatedTgt = e.relatedTarget || e.toElement;
-
-                    if (relatedTgt == null || relatedTgt.tagName == "HTML") {
-                        me.hide ();
-                    }
-                });
-            }
-
             me.editor.addListener ("afterhidepop" , function () {
                 if (!me.isHidden) {
                     isSubMenuShow = true;
