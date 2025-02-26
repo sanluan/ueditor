@@ -126,6 +126,8 @@ UE.plugins['fiximgclick'] = (function () {
                 var me = this;
                 me.target.width = parseInt(me.resizer.style.width);
                 me.target.height = parseInt(me.resizer.style.height);
+                domUtils.removeStyle(me.target,'width');
+                domUtils.removeStyle(me.target,'height');
                 me.attachTo(me.target);
             },
             updateContainerStyle: function (dir, offset) {
@@ -308,7 +310,7 @@ UE.plugins['fiximgclick'] = (function () {
         if (browser.webkit) {
             me.addListener('click', function (type, e) {
                 if (e.target.tagName == 'IMG' && me.body.contentEditable!="false") {
-                    var range = new dom.Range(me.document);
+                    var range = me.selection.getRange();
                     range.selectNode(e.target).select();
                 }
             });

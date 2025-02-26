@@ -210,8 +210,7 @@ UE.plugins['autotypeset'] = function(){
                 if(opt.imageWidth && !domUtils.getStyle(ci,'width')){
                     var img = ci;
                     if(img.width > opt.imageWidth){
-                        domUtils.setStyle(img,'width',opt.imageWidth+'px');
-                        domUtils.setStyle(img,'height','auto');
+                        img.setAttribute('width', opt.imageWidth);
                     }
                 }
             } else {
