@@ -934,6 +934,7 @@
                     mimeTypes: 'image/*'
                 },
                 server: actionUrl,
+                headers: editor.getOpt('headers') || {},
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
                 fileSingleSizeLimit: imageMaxSize,    // 默认 2 M

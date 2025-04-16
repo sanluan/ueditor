@@ -94,6 +94,11 @@ UE.plugin.register('autoupload', function (){
         fd.append(fieldName, file, file.name || ('blob.' + file.type.substr('image/'.length)));
         fd.append('type', 'ajax');
         xhr.open("post", url, true);
+        if (me.options.headers && typeof me.options.headers === "object") {
+            for (var key in me.options.headers) {
+              xhr.setRequestHeader(key, me.options.headers[key])
+            }
+        }
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         xhr.addEventListener('load', function (e) {
             try{

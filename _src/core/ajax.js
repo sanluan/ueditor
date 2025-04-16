@@ -58,6 +58,7 @@ UE.ajax = function() {
                 method:"POST",
                 timeout:5000,
                 async:true,
+                headers: {},
                 data:{},//需要传递对象的话只能覆盖
                 onsuccess:function() {
                 },
@@ -98,6 +99,11 @@ UE.ajax = function() {
                 }
             }
         };
+        if (ajaxOpts.headers) {
+            for (var key in ajaxOpts.headers) {
+                xhr.setRequestHeader(key, ajaxOpts.headers[key]);
+            }
+        }
         if (method == "POST") {
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send(submitStr);

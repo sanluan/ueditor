@@ -370,6 +370,7 @@
                     mimeTypes: 'image/*'
                 },
                 server: actionUrl,
+                headers: editor.getOpt('headers') || {},
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
                 fileSingleSizeLimit: imageMaxSize,    // 默认 2 M
@@ -860,6 +861,7 @@
                 ajax.request(url, {
                     'timeout': 100000,
                     'dataType': isJsonp ? 'jsonp':'',
+                    'headers': editor.options.headers || {},
                     'data': utils.extend({
                             start: this.listIndex,
                             size: this.listSize

@@ -149,7 +149,7 @@
             } else {
                 offset = uiUtils.getViewportOffsetByEvent (e);
                 offset.top -= el.offsetHeight + me.SPACE;
-                offset.left += me.SPACE + 20;
+                offset.left += me.SPACE;
                 setPos (offset);
                 me.setOpacity (el , 0.2);
             }
