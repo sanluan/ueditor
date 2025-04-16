@@ -26,12 +26,11 @@ UE.plugin.register('simpleupload', function (){
             btnIframeBody = btnIframeDoc.body;
             wrapper = btnIframeDoc.createElement('div');
 
-            wrapper.innerHTML = '<form id="edui_form_' + timestrap + '" target="edui_iframe_' + timestrap + '" method="POST" enctype="multipart/form-data" action="' + me.getOpt('serverUrl') + '" ' +
+            wrapper.innerHTML = '<form id="edui_form_' + timestrap + '" target="edui_iframe_' + timestrap + '" method="POST" enctype="multipart/form-data"' +
             'style="' + btnStyle + '">' +
             '<input id="edui_input_' + timestrap + '" type="file" accept="image/gif,image/webp,image/jpeg,image/png,image/jpg,image/bmp" name="' + me.options.imageFieldName + '" ' +
             'style="' + btnStyle + '">' +
-            '</form>' +
-            '<iframe id="edui_iframe_' + timestrap + '" name="edui_iframe_' + timestrap + '" style="display:none;width:0;height:0;border:0;margin:0;padding:0;position:absolute;"></iframe>';
+            '</form>';
 
             wrapper.className = 'edui-' + me.options.theme;
             wrapper.id = me.ui.id + '_iframeupload';
@@ -47,7 +46,6 @@ UE.plugin.register('simpleupload', function (){
 
             var form = btnIframeDoc.getElementById('edui_form_' + timestrap);
             var input = btnIframeDoc.getElementById('edui_input_' + timestrap);
-            var iframe = btnIframeDoc.getElementById('edui_iframe_' + timestrap);
 
             domUtils.on(input, 'change', function(){
                 if(!input.value) return;
@@ -60,15 +58,11 @@ UE.plugin.register('simpleupload', function (){
                 me.focus();
                 me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
 
-                function callback(){
+                function callback(json){
                     try{
-                        var link, json, loader,
-                            body = (iframe.contentDocument || iframe.contentWindow.document).body,
-                            result = body.innerText || body.textContent || '';
-                        json = (new Function("return " + result))();
-                        link = me.options.imageUrlPrefix + json.url;
+                        var link = me.options.imageUrlPrefix + json.url;
                         if(json.state == 'SUCCESS' && json.url) {
-                            loader = me.document.getElementById(loadingId);
+                            var loader = me.document.getElementById(loadingId);
                             loader.setAttribute('src', link);
                             loader.setAttribute('_src', link);
                             loader.setAttribute('title', json.title || '');
@@ -83,7 +77,6 @@ UE.plugin.register('simpleupload', function (){
                         showErrorLoader && showErrorLoader(me.getLang('simpleupload.loadError'));
                     }
                     form.reset();
-                    domUtils.un(iframe, 'load', callback);
                 }
                 function showErrorLoader(title){
                     if(loadingId) {
@@ -111,9 +104,22 @@ UE.plugin.register('simpleupload', function (){
                     return;
                 }
 
-                domUtils.on(iframe, 'load', callback);
-                form.action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?':'&') + params);
-                form.submit();
+                var file = input.files[0];
+                var xhr = new XMLHttpRequest();
+                var fd = new FormData();
+                fd.append(me.options.imageFieldName, file, file.name || ('blob.' + file.type.substr('image/'.length)));
+                xhr.open("post", utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?':'&') + params), true);
+                if (me.options.headers && typeof me.options.headers === "object") {
+                    for (var key in me.options.headers) {
+                      xhr.setRequestHeader(key, me.options.headers[key])
+                    }
+                }
+                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                xhr.addEventListener('load', function (e) {
+                    var json = (new Function("return " + utils.trim(e.target.response)))();
+                    callback(json);
+                });
+                xhr.send(fd);
             });
 
             var stateTimer;
