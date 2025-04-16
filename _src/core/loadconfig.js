@@ -13,7 +13,7 @@
 
                 configUrl && UE.ajax.request(configUrl,{
                     'method': 'GET',
-                    'headers': editor.getOpt('headers') || {},
+                    'headers': me.getOpt('headers') || {},
                     'onsuccess':function(r){
                         try {
                             var config = eval("("+r.responseText+")");
