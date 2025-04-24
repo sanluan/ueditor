@@ -116,7 +116,7 @@ UE.plugin.register('simpleupload', function (){
                 }
                 xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                 xhr.addEventListener('load', function (e) {
-                    var json = (new Function("return " + utils.trim(e.target.response)))();
+                    var json = utils.str2json(e.target.response);
                     callback(json);
                 });
                 xhr.send(fd);

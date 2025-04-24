@@ -1429,7 +1429,7 @@
                     'method': 'get',
                     'onsuccess': function (r) {
                         try {
-                            var json = eval('(' + r.responseText + ')');
+                            var json = utils.str2json(r.responseText);
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
                                 _this.listIndex = parseInt(json.start) + parseInt(json.list.length);
@@ -1568,7 +1568,7 @@
                     'method': 'get',
                     'onsuccess': function (r) {
                         try {
-                            var json = eval('(' + r.responseText + ')');
+                            var json = utils.str2json(r.responseText);
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
                                 _this.listIndex = parseInt(json.start) + parseInt(json.list.length);

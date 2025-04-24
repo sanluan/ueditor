@@ -102,7 +102,7 @@ UE.plugin.register('autoupload', function (){
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         xhr.addEventListener('load', function (e) {
             try{
-                var json = (new Function("return " + utils.trim(e.target.response)))();
+                var json = utils.str2json(e.target.response);
                 if (json.state == 'SUCCESS' && json.url) {
                     successHandler(json, img);
                 } else {

@@ -16,7 +16,7 @@
                     'headers': me.getOpt('headers') || {},
                     'onsuccess':function(r){
                         try {
-                            var config = eval("("+r.responseText+")");
+                            var config = utils.str2json(r.responseText);
                             utils.extend(me.options, config);
                             me.fireEvent('serverConfigLoaded');
                             me._serverConfigLoaded = true;

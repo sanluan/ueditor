@@ -70,7 +70,7 @@ UE.plugins['catchremoteimage'] = function () {
                     //成功抓取
                     success: function (r) {
                         try {
-                            var info = r.state !== undefined ? r:eval("(" + r.responseText + ")");
+                            var info = r.state !== undefined ? r: utils.str2json(r.responseText);
                         } catch (e) {
                             return;
                         }
