@@ -769,7 +769,7 @@
                     if (opt.initialFrameWidth) {
                         opt.minFrameWidth = opt.initialFrameWidth;
                     } else {
-                        opt.minFrameWidth = opt.initialFrameWidth = holder.offsetWidth;
+                        opt.minFrameWidth = opt.initialFrameWidth = holder.offsetWidth - 20;
                         var styleWidth = holder.style.width;
                         if(/%$/.test(styleWidth)) {
                             opt.initialFrameWidth = styleWidth;

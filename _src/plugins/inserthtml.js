@@ -248,7 +248,7 @@ UE.commands['inserthtml'] = {
 
         setTimeout(function(){
             range = me.selection.getRange();
-            range.scrollToView(me.autoHeightEnabled,me.autoHeightEnabled ? domUtils.getXY(me.iframe).y:0);
+            range.scrollToView(me.autoHeightEnabled, me.autoHeightEnabled ? domUtils.getXY(me.iframe).y:0);
             me.fireEvent('afterinserthtml', html);
         },200);
     }

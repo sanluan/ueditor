@@ -103,7 +103,7 @@ UE.plugin.register('searchreplace',function(){
             if(new RegExp('^' + opt.searchStr + '$',(opt.casesensitive ? '' : 'i')).test(rngText)){
                 if(opt.replaceStr != undefined){
                     replaceText(rng,opt.replaceStr);
-                    rng.select();
+                    rng.select().scrollToView(me.autoHeightEnabled, me.autoHeightEnabled ? domUtils.getXY(me.iframe).y:0);
                     return true;
                 }else{
                     rng.collapse(opt.dir == -1)
@@ -128,7 +128,7 @@ UE.plugin.register('searchreplace',function(){
             if(opt.replaceStr !== undefined){
                 replaceText(rng,opt.replaceStr)
             }
-            rng.select();
+            rng.select().scrollToView(me.autoHeightEnabled, me.autoHeightEnabled ? domUtils.getXY(me.iframe).y:0);
             return true;
         }else{
             rng.setCursor()

@@ -388,7 +388,7 @@
                 if(options.initialFrameWidth){
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
-                    options.minFrameWidth = options.initialFrameWidth = container.offsetWidth;
+                    options.minFrameWidth = options.initialFrameWidth = container.offsetWidth - 20;
                 }
                 if(options.initialFrameHeight){
                     options.minFrameHeight = options.initialFrameHeight
