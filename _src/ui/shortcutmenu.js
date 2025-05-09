@@ -50,7 +50,7 @@
                         if (y > 0 && y < distanceY) {
                             me.setOpacity (el , "1");
                         } else if (y > distanceY && y < distanceY + 70) {
-                            me.setOpacity (el , "0.5");
+                            me.setOpacity (el , "1");
                             flag = false;
                         } else if (y > distanceY + 70 && y < distanceY + 140) {
                             me.hide ();
@@ -59,7 +59,7 @@
                         if (flag && x > 0 && x < distanceX) {
                             me.setOpacity (el , "1")
                         } else if (x > distanceX && x < distanceX + 70) {
-                            me.setOpacity (el , "0.5")
+                            me.setOpacity (el , "1")
                         } else if (x > distanceX + 70 && x < distanceX + 140) {
                             me.hide ();
                         }
@@ -151,7 +151,7 @@
                 offset.top -= el.offsetHeight + me.SPACE;
                 offset.left += me.SPACE;
                 setPos (offset);
-                me.setOpacity (el , 0.2);
+                me.setOpacity (el , 1);
             }
 
 
