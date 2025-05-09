@@ -20,7 +20,7 @@
         isHidden : true ,
         SPACE : 5 ,
         initShortCutMenu : function () {
-            this.items = this.items || [];
+            this.uiItems = [];
             this.initUIBase ();
             this.initItems ();
             this.initEvent ();
@@ -80,8 +80,8 @@
                     var item = this.items[i].toLowerCase ();
 
                     if (UI[item]) {
-                        this.items[i] = new UI[item] (this.editor);
-                        this.items[i].className += " edui-shortcutsubmenu ";
+                        this.uiItems[i] = new UI[item] (this.editor);
+                        this.uiItems[i].className += " edui-shortcutsubmenu ";
                     }
                 }
             }
@@ -171,22 +171,22 @@
             this.isHidden = true;
         } ,
         postRender : function () {
-            if (utils.isArray (this.items)) {
-                for (var i = 0, item ; item = this.items[i++] ;) {
+            if (utils.isArray (this.uiItems)) {
+                for (var i = 0, item ; item = this.uiItems[i++] ;) {
                     item.postRender ();
                 }
             }
         } ,
         getHtmlTpl : function () {
             var buff;
-            if (utils.isArray (this.items)) {
+            if (utils.isArray (this.uiItems)) {
                 buff = [];
-                for (var i = 0 ; i < this.items.length ; i++) {
-                    buff[i] = this.items[i].renderHtml ();
+                for (var i = 0 ; i < this.uiItems.length ; i++) {
+                    buff[i] = this.uiItems[i].renderHtml ();
                 }
                 buff = buff.join ("");
             } else {
-                buff = this.items;
+                buff = this.uiItems;
             }
 
             return '<div id="##" class="%% edui-toolbar" data-src="shortcutmenu" onmousedown="return false;" onselectstart="return false;" >' +
