@@ -51,8 +51,7 @@
         'edittd':'~/dialogs/table/edittd.html',
         'scrawl':'~/dialogs/scrawl/scrawl.html',
         'template':'~/dialogs/template/template.html',
-        'background':'~/dialogs/background/background.html',
-        'charts': '~/dialogs/charts/charts.html'
+        'background':'~/dialogs/background/background.html'
     };
     //为工具栏添加按钮，以下都是统一的按钮触发命令，所以写在一起
     var btnCmds = ['undo', 'redo', 'formatmatch', 'catchremoteimage',
@@ -180,7 +179,7 @@
     var dialogBtns = {
         noOk:['searchreplace', 'help', 'spechars', 'preview'],
         ok:['attachment', 'anchor', 'link', 'insertimage', 'map', 'gmap', 'insertframe', 'wordimage',
-            'insertvideo', 'insertframe', 'edittip', 'edittable', 'edittd', 'scrawl', 'template', 'background', 'charts']
+            'insertvideo', 'insertframe', 'edittip', 'edittable', 'edittd', 'scrawl', 'template', 'background']
     };
 
     for (var p in dialogBtns) {
@@ -204,7 +203,7 @@
                                 className:'edui-for-' + cmd,
                                 title:title,
                                 holdScroll: cmd === 'insertimage',
-                                fullscreen: /charts|preview/.test(cmd),
+                                fullscreen: /preview/.test(cmd),
                                 closeDialog:editor.getLang("closeDialog")
                             }, type == 'ok' ? {
                                 buttons:[
@@ -257,7 +256,7 @@
                                 }
                             },
                             theme:editor.options.theme,
-                            disabled:(cmd == 'scrawl' && editor.queryCommandState("scrawl") == -1) || ( cmd == 'charts' )
+                            disabled:(cmd == 'scrawl' && editor.queryCommandState("scrawl") == -1)
                         });
                         editorui.buttons[cmd] = ui;
                         editor.addListener('selectionchange', function () {
