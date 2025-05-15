@@ -35,12 +35,14 @@ module.exports = function (grunt) {
         packageJson = grunt.file.readJSON('package.json'),
         encode = grunt.option('encode') || 'utf8',
         disDir = "dist/",
+        parseDisDir = "dist/",
         banner = '/*!\n * UEditor\n * version: ' + packageJson.name + '-'+ packageJson.version+'\n */\n\n';
 
     //init
     (function () {
         encode = typeof encode === "string" ? encode.toLowerCase() : 'utf8';
         disDir = 'dist/' + packageJson.name + '-'+packageJson.version+'/';
+        parseDisDir = 'dist/' + packageJson.name + '-'+packageJson.version+'-parse/';
     })();
 
     grunt.initConfig({
@@ -94,6 +96,10 @@ module.exports = function (grunt) {
             parse: {
                 src: disDir + '<%= pkg.name %>.parse.js',
                 dest: disDir + '<%= pkg.name %>.parse.min.js'
+            },
+            parse2: {
+                src: disDir + '<%= pkg.name %>.parse.js',
+                dest: parseDisDir + '<%= pkg.name %>.parse.min.js'
             }
         },
         copy: {
@@ -103,6 +109,12 @@ module.exports = function (grunt) {
 
                         src: [ '*.html', 'themes/iframe.css', 'themes/default/dialogbase.css', 'themes/default/images/**', 'dialogs/**', 'lang/**', 'third-party/**' , 'themes/ueditor-list/**'],
                         dest: disDir
+
+                    },
+                    {
+
+                        src: ['themes/default/images/sortable.png', 'dialogs/map/show.html','third-party/SyntaxHighlighter/**' , 'themes/ueditor-list/**'],
+                        dest: parseDisDir
 
                     }
                 ]

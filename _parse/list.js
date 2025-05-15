@@ -35,7 +35,7 @@ UE.parse.register('list',function(utils){
         customCss.push(selector +' .list-paddingleft-2{padding-left:'+ this.listDefaultPaddingLeft+'px}');
         customCss.push(selector +' .list-paddingleft-3{padding-left:'+ this.listDefaultPaddingLeft*2+'px}');
 
-        utils.cssRule('list', selector +' ol,'+selector +' ul{margin:0;padding:0;}'+selector +' li{clear:both;}'+customCss.join('\n'), document);
+        utils.cssRule('list', selector +' li{clear:both;}'+customCss.join('\n'), document);
     }
     function applyStyle(nodes){
         var T = this;
@@ -46,7 +46,7 @@ UE.parse.register('list',function(utils){
                     utils.pushItem(customCss,selector +' li.list-' + customStyle[listStyle] + '{background-image:url(' + T.liiconpath +customStyle[listStyle]+'.gif)}');
                     utils.pushItem(customCss,selector +' ul.custom_'+listStyle+'{list-style:none;} '+ selector +' ul.custom_'+listStyle+' li{background-position:0 3px;background-repeat:no-repeat}');
 
-                }else{
+                }else if(listStyle !== "cn" && listStyle !== "num"){
                     var index = 1;
                     utils.each(list.childNodes,function(li){
                         if(li.tagName == 'LI'){
@@ -58,9 +58,7 @@ UE.parse.register('list',function(utils){
                 }
                 switch(listStyle){
                     case 'cn':
-                        utils.pushItem(customCss,selector + ' li.list-'+listStyle+'-paddingleft-1{padding-left:25px}');
-                        utils.pushItem(customCss,selector + ' li.list-'+listStyle+'-paddingleft-2{padding-left:40px}');
-                        utils.pushItem(customCss,selector + ' li.list-'+listStyle+'-paddingleft-3{padding-left:55px}');
+                        list.style.listStyleType = "cjk-ideographic";
                         break;
                     case 'cn1':
                         utils.pushItem(customCss,selector + ' li.list-'+listStyle+'-paddingleft-1{padding-left:30px}');
@@ -73,6 +71,8 @@ UE.parse.register('list',function(utils){
                         utils.pushItem(customCss,selector + ' li.list-'+listStyle+'-paddingleft-3{padding-left:68px}');
                         break;
                     case 'num':
+                        list.style.listStyleType = "decimal";
+                        break;
                     case 'num1':
                         utils.pushItem(customCss,selector + ' li.list-'+listStyle+'-paddingleft-1{padding-left:25px}');
                         break;

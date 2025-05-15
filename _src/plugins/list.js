@@ -12,10 +12,8 @@ UE.plugins['list'] = function () {
             'BLOCKQUOTE':1
         };
     var customStyle = {
-        'cn' : 'cn-1-',
         'cn1' : 'cn-2-',
         'cn2' : 'cn-3-',
-        'num':  'num-1-',
         'num1' : 'num-2-',
         'num2' : 'num-3-',
         'dash'  : 'dash',
@@ -25,13 +23,12 @@ UE.plugins['list'] = function () {
     me.setOpt( {
         'autoTransWordToList':false,
         'insertorderedlist':{
-            'num':'',
+            'decimal':'',
             'num1':'',
             'num2':'',
-            'cn':'',
+            'cjk-ideographic':'',
             'cn1':'',
             'cn2':'',
-            'decimal':'',
             'lower-alpha':'',
             'lower-roman':'',
             'upper-alpha':'',
@@ -82,11 +79,6 @@ UE.plugins['list'] = function () {
                 customCss.push('ol.custom_'+p+'{list-style:none;}ol.custom_'+p+' li{background-position:0 3px;background-repeat:no-repeat}');
             }
             switch(p){
-                case 'cn':
-                    customCss.push('li.list-'+p+'-paddingleft-1{padding-left:25px}');
-                    customCss.push('li.list-'+p+'-paddingleft-2{padding-left:40px}');
-                    customCss.push('li.list-'+p+'-paddingleft-3{padding-left:55px}');
-                    break;
                 case 'cn1':
                     customCss.push('li.list-'+p+'-paddingleft-1{padding-left:30px}');
                     customCss.push('li.list-'+p+'-paddingleft-2{padding-left:40px}');
@@ -97,7 +89,6 @@ UE.plugins['list'] = function () {
                     customCss.push('li.list-'+p+'-paddingleft-2{padding-left:55px}');
                     customCss.push('li.list-'+p+'-paddingleft-3{padding-left:68px}');
                     break;
-                case 'num':
                 case 'num1':
                     customCss.push('li.list-'+p+'-paddingleft-1{padding-left:25px}');
                     break;
@@ -174,9 +165,10 @@ UE.plugins['list'] = function () {
                     type = getStyle(list) || (list.tagName == 'OL' ? 'decimal' : 'disc')
                 }else{
                     var className = n.parentNode.getAttr('class');
-                    if(className && /custom_/.test(className)){
+                    if(className && /custom_/.test(className) ){
                         type = className.match(/custom_(\w+)/)[1]
-                    }else{
+                    }
+                    if(!type || !customStyle[type]) {
                         type = n.parentNode.getStyle('list-style-type');
                     }
                     if(!type){
@@ -370,7 +362,8 @@ UE.plugins['list'] = function () {
 
             }
             var index = 0,type = 2;
-            if( domUtils.hasClass(node,/custom_/)){
+            var currentStyle = getStyle(node);
+            if( domUtils.hasClass(node,/custom_/) && customStyle[currentStyle]){
                 if(!(/[ou]l/i.test(parent.tagName) && domUtils.hasClass(parent,/custom_/))){
                     type = 1;
                 }
@@ -393,8 +386,9 @@ UE.plugins['list'] = function () {
                     return;
                 }
                 index++;
-                if(domUtils.hasClass(node,/custom_/) ){
-                    var paddingLeft = 1,currentStyle = getStyle(node);
+                var currentStyle = getStyle(node);
+                if(domUtils.hasClass(node,/custom_/) && customStyle[currentStyle]){
+                    var paddingLeft = 1;
                     if(node.tagName == 'OL'){
                         if(currentStyle){
                             switch(currentStyle){

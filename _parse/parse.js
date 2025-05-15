@@ -67,7 +67,7 @@
                 var doc = window.document;
                 if (doc.readyState === "complete") {
                     onready();
-                }else{
+                } else {
                     if (isIE) {
                         (function () {
                             if (doc.isReady) return;
@@ -83,10 +83,6 @@
                             onready()
                         });
                     } else {
-                        doc.addEventListener("DOMContentLoaded", function () {
-                            doc.removeEventListener("DOMContentLoaded", arguments.callee, false);
-                            onready();
-                        }, false);
                         window.addEventListener('load', function(){onready()}, false);
                     }
                 }

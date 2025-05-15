@@ -678,6 +678,18 @@
                     _onMenuClick = function () {
                         editor.execCommand(cmd, this.value);
                     }, items = [];
+                if(vals["cn"]){
+                    if(!vals["cjk-ideographic"]){
+                      vals["cjk-ideographic"] = vals["cn"];
+                    }
+                    delete vals["cn"];
+                }
+                if(vals["num"]){
+                    if(!vals["decimal"]){
+                      vals["decimal"] = vals["num"];
+                    }
+                    delete vals["cn"];
+                }
                 for (var i in vals) {
                     items.push({
                         label:vals[i] || editor.getLang()[cmd][i] || "",

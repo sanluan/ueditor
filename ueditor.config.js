@@ -154,10 +154,9 @@
         //有序列表的下拉配置,值留空时支持多语言自动识别，若配置值，则以此值为准
         //,'insertorderedlist':{
         //      //自定的样式
-        //        'num':'1,2,3...',
         //        'num1':'1),2),3)...',
         //        'num2':'(1),(2),(3)...',
-        //        'cn':'一,二,三....',
+        //        'cjk-ideographic':'一,二,三....',
         //        'cn1':'一),二),三)....',
         //        'cn2':'(一),(二),(三)....',
         //     //系统自带
@@ -423,7 +422,7 @@
 			sub:    ['class', 'style'],
 			sup:    ['class', 'style'],
 			strong: ['class', 'style'],
-			table:  ['width', 'border', 'align', 'valign', 'data-chart', 'class', 'style'],
+			table:  ['width', 'border', 'align', 'valign', 'class', 'style'],
 			tbody:  ['align', 'valign', 'class', 'style'],
 			td:     ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
 			tfoot:  ['align', 'valign', 'class', 'style'],
