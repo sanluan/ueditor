@@ -33,14 +33,12 @@ module.exports = function (grunt) {
             }
         },
         packageJson = grunt.file.readJSON('package.json'),
-        encode = grunt.option('encode') || 'utf8',
         disDir = "dist/",
         parseDisDir = "dist/",
         banner = '/*!\n * UEditor\n * version: ' + packageJson.name + '-'+ packageJson.version+'\n */\n\n';
 
     //init
     (function () {
-        encode = typeof encode === "string" ? encode.toLowerCase() : 'utf8';
         disDir = 'dist/' + packageJson.name + '-'+packageJson.version+'/';
         parseDisDir = 'dist/' + packageJson.name + '-'+packageJson.version+'-parse/';
     })();
@@ -128,13 +126,6 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        transcoding: {
-            options: {
-                charset: encode
-            },
-            src: [disDir + '**/*.html', disDir + '**/*.js', disDir + '**/*.css', disDir + '**/*.json']
-
-        },
         replace: {
             demo: {
                 src: disDir + 'index.html',
@@ -168,12 +159,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-transcoding');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerTask('default', 'UEditor build', function () {
         var tasks = [ 'concat', 'cssmin', 'uglify', 'copy:base', 'copy:demo', 'replace:demo', 'clean' ];
-        tasks.push('transcoding');
         //config修改
         updateConfigFile();
         grunt.task.run(tasks);

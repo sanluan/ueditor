@@ -1156,7 +1156,7 @@
          * 检查编辑区域中是否有内容
          * @method  hasContents
          * @remind 默认有文本内容，或者有以下节点都不认为是空
-         * table,ul,ol,dl,iframe,area,base,col,hr,img,embed,input,link,meta,param
+         * table,ul,ol,dl,iframe,area,base,col,hr,img,embed,video,input,link,meta,param
          * @return { Boolean } 检查有内容返回true，否则返回false
          * @example
          * ```javascript
