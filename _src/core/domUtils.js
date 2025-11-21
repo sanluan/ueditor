@@ -1133,7 +1133,7 @@ var domUtils = dom.domUtils = {
             }
             //span单独处理
             if (ci.tagName.toLowerCase() == 'span') {
-                if (node === ci.parentNode) {
+                if (node === ci.parentNode || (ci.parentNode.tagName.toLowerCase() == "strong" || ci.parentNode.tagName.toLowerCase() == "em") ) {
                     domUtils.trimWhiteTextNode(node);
                     if (node.childNodes.length == 1) {
                         node.style.cssText = ci.style.cssText + ";" + node.style.cssText;

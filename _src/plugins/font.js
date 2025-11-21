@@ -174,7 +174,6 @@ UE.plugins['font'] = function () {
                 parent.style.cssText += node.style.cssText;
                 domUtils.remove(node,true);
                 node = parent;
-
             }else{
                 break;
             }
@@ -300,56 +299,7 @@ UE.plugins['font'] = function () {
             }
             node.tagName = 'span';
         });
-//        utils.each(root.getNodesByTagName('span'), function (node) {
-//            var val;
-//            if(val = node.getAttr('class')){
-//                if(/fontstrikethrough/.test(val)){
-//                    node.setStyle('text-decoration','line-through');
-//                    if(node.attrs['class']){
-//                        node.attrs['class'] = node.attrs['class'].replace(/fontstrikethrough/,'');
-//                    }else{
-//                        node.setAttr('class')
-//                    }
-//                }
-//                if(/fontborder/.test(val)){
-//                    node.setStyle('border','1px solid #000');
-//                    if(node.attrs['class']){
-//                        node.attrs['class'] = node.attrs['class'].replace(/fontborder/,'');
-//                    }else{
-//                        node.setAttr('class')
-//                    }
-//                }
-//            }
-//        });
     });
-//    me.addOutputRule(function(root){
-//        utils.each(root.getNodesByTagName('span'), function (node) {
-//            var val;
-//            if(val = node.getStyle('text-decoration')){
-//                if(/line-through/.test(val)){
-//                    if(node.attrs['class']){
-//                        node.attrs['class'] += ' fontstrikethrough';
-//                    }else{
-//                        node.setAttr('class','fontstrikethrough')
-//                    }
-//                }
-//
-//                node.setStyle('text-decoration')
-//            }
-//            if(val = node.getStyle('border')){
-//                if(/1px/.test(val) && /solid/.test(val)){
-//                    if(node.attrs['class']){
-//                        node.attrs['class'] += ' fontborder';
-//
-//                    }else{
-//                        node.setAttr('class','fontborder')
-//                    }
-//                }
-//                node.setStyle('border')
-//
-//            }
-//        });
-//    });
     for (var p in fonts) {
         (function (cmd, style) {
             UE.commands[cmd] = {
