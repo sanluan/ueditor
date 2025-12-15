@@ -356,6 +356,7 @@ UE.I18N['zh-cn'] = {
             'lang_videoW':"宽度",
             'lang_videoH':"高度",
             'lang_alignment':"对齐方式",
+            'lang_input_autoplay':"自动播放",
             'lang_input_fileStatus':' 当前未上传文件',
             'startUpload':{'style':"background:url(upload.png) no-repeat;"},
             'lang_videoLoading':"　视频加载中……",
@@ -364,7 +365,7 @@ UE.I18N['zh-cn'] = {
             'lang_upload_width':"宽度",
             'lang_upload_height':"高度",
             'lang_upload_alignment':"对齐方式",
-            'lang_format_advice':"建议使用mp4格式."
+            'lang_format_advice':"建议使用mp4格式.",
 
         },
         'numError':"请输入正确的数值，如123,400",
