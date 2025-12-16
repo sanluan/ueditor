@@ -82,7 +82,7 @@
 
         //编辑视频时初始化相关信息
         (function(){
-            var img = editor.selection.getRange().getClosedNode(),url,poster;
+            var img = editor.selection.getRange().getClosedNode(),url,poster,autoplay;
             if(img && img.className){
                 var hasFakedClass = (img.className == "edui-faked-video"),
                     hasUploadClass = img.className.indexOf("edui-upload-video")!=-1;
@@ -91,6 +91,7 @@
                     $G("posterUrl").value = poster = img.getAttribute("poster");
                     $G("videoWidth").value = img.width;
                     $G("videoHeight").value = img.height;
+                    $G("autoplay").checked = autoplay = img.getAttribute("autoplay")||false;
                     var align = domUtils.getComputedStyle(img,"float"),
                         parentAlign = domUtils.getComputedStyle(img.parentNode,"text-align");
                     updateAlignButton(parentAlign==="center"?"center":align);
@@ -99,7 +100,7 @@
                     isModifyUploadVideo = false;
                 }
             }
-            createPreviewVideo(url,poster);
+            createPreviewVideo(url,poster,autoplay);
         })();
     }
 
@@ -158,9 +159,10 @@
     function insertSingle(){
         var width = $G("videoWidth"),
             height = $G("videoHeight"),
-            url=$G('videoUrl').value,
+            url = $G('videoUrl').value,
             align = findFocus("videoFloat","name"),
-            poster = $G('posterUrl').value;
+            poster = $G('posterUrl').value,
+            autoplay = $G('autoplay').checked ;
         if(!url) return false;
         if ( !checkNum( [width, height] ) ) return false;
         editor.execCommand('insertvideo', {
@@ -168,7 +170,8 @@
             width: width.value,
             height: height.value,
             align: align,
-            poster : poster
+            poster : poster,
+            autoplay : autoplay
         }, isModifyUploadVideo ? 'upload':null);
     }
 

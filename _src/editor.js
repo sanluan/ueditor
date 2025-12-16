@@ -16,6 +16,6 @@ UE.I18N = {};
 
 UE._customizeUI = {};
 
-UE.version = "1.4.13";
+UE.version = "1.4.14";
 
 var dom = UE.dom = {};
