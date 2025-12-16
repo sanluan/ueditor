@@ -365,8 +365,7 @@ UE.I18N['zh-cn'] = {
             'lang_upload_width':"宽度",
             'lang_upload_height':"高度",
             'lang_upload_alignment':"对齐方式",
-            'lang_format_advice':"建议使用mp4格式.",
-
+            'lang_format_advice':"建议使用mp4格式."
         },
         'numError':"请输入正确的数值，如123,400",
         'floatLeft':"左浮动",
