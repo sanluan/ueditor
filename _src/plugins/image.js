@@ -63,7 +63,6 @@ UE.commands['imagefloat'] = {
                                     domUtils.setStyle(tmpNode, 'text-align', '');
                                 }
 
-
                             }
 
                             range.selectNode(img).select();

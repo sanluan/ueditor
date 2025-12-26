@@ -15,10 +15,11 @@ UE.plugins['video'] = function (){
      * @param align 视频对齐
      * @param poster 封面图
      * @param autoplay 自动播放
+     * @param loop 循环播放
      * @param classname  css类名
      * @param type  类型支持video、embed
      */
-    function creatInsertStr(url,width,height,id,align,poster,autoplay,classname,type){
+    function creatInsertStr(url,width,height,id,align,poster,autoplay,loop,classname,type){
 
         url = utils.unhtmlForUrl(url);
         poster = utils.unhtmlForUrl(poster);
@@ -31,7 +32,7 @@ UE.plugins['video'] = function (){
         var str;
         switch (type){
             case 'image':
-                str = '<img ' + (id ? 'id="' + id+'"' : '') + (poster ? ' poster="' + poster + '"': '') +  (autoplay ? ' autoplay="' + autoplay + '"': '') +  ' width="'+ width +'" height="' + height + '" _url="'+url+'" class="' + classname.replace(/\bvideo-js\b/, '') + '"'  +
+                str = '<img ' + (id ? 'id="' + id+'"' : '') + (poster ? ' poster="' + poster + '"': '') +  (autoplay ? ' autoplay="' + autoplay + '"': '') +  (loop ? ' loop="' + loop + '"': '') +  ' width="'+ width +'" height="' + height + '" _url="'+url+'" class="' + classname.replace(/\bvideo-js\b/, '') + '"'  +
                     ' src="' + me.options.UEDITOR_BASE_URL+'themes/default/images/spacer.gif" style="background-image:url('+me.options.UEDITOR_BASE_URL+'themes/default/images/videologo.gif)'+(poster ? ' ,url(' + poster + ')': '')+';background-repeat:no-repeat,no-repeat;background-position: center center,center center;background-size: auto,contain;border:1px solid gray;'+(align ? 'float:' + align + ';': '')+'" />'
                 break;
             case 'embed':
@@ -43,10 +44,11 @@ UE.plugins['video'] = function (){
                 var ext = url.substr(url.lastIndexOf('.') + 1);
                 if(ext == 'ogv') ext = 'ogg';
                 if('mp3'==ext || 'mid' == ext){
-                  str = '<audio' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') + (autoplay ? ' autoplay="' + autoplay + '"': '') +
+                  str = '<audio' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') + (autoplay ? ' autoplay="' + autoplay + '"': '')  +  (loop ? ' loop="' + loop + '"': '') +
                     ' controls preload="none" src="' + url + '">" /></audio>';
                 }else{
-                  str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') + (poster ? ' poster="' + poster + '"': '') + (autoplay ? ' autoplay="' + autoplay + '"': '') + ' controls preload="none" width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' +
+                  str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') + (poster ? ' poster="' + poster + '"': '') + (autoplay ? ' autoplay="' + autoplay + '"': '') +
+                       (loop ? ' loop="' + loop + '"': '') + ' controls preload="none" width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' +
                     '<source src="' + url + '" type="video/' + ext + '" /></video>';
                 }
                 break;
@@ -58,11 +60,11 @@ UE.plugins['video'] = function (){
         utils.each(root.getNodesByTagName(img2video ? 'img' : 'embed video audio'),function(node){
             var className = node.getAttr('class');
             if(className && className.indexOf('edui-faked-video') != -1){
-                var html = creatInsertStr( img2video ? node.getAttr('_url') : node.getAttr('src'),node.getAttr('width'),node.getAttr('height'),null,node.getStyle('float') || '',node.getAttr('poster'),node.getAttr('autoplay'),className,img2video ? 'embed':'image');
+                var html = creatInsertStr( img2video ? node.getAttr('_url') : node.getAttr('src'),node.getAttr('width'),node.getAttr('height'),null,node.getStyle('float') || '',node.getAttr('poster'),node.getAttr('autoplay'),node.getAttr('loop'),className,img2video ? 'embed':'image');
                 node.parentNode.replaceChild(UE.uNode.createElement(html),node);
             }
             if(className && className.indexOf('edui-upload-video') != -1){
-                var html = creatInsertStr( img2video ? node.getAttr('_url') : node.getAttr('src'),node.getAttr('width'),node.getAttr('height'),null,node.getStyle('float') || '',node.getAttr('poster'),node.getAttr('autoplay'),className,img2video ? 'video':'image');
+                var html = creatInsertStr( img2video ? node.getAttr('_url') : node.getAttr('src'),node.getAttr('width'),node.getAttr('height'),null,node.getStyle('float') || '',node.getAttr('poster'),node.getAttr('autoplay'),node.getAttr('loop'),className,img2video ? 'video':'image');
                 node.parentNode.replaceChild(UE.uNode.createElement(html),node);
             }
         })
@@ -151,7 +153,7 @@ UE.plugins['video'] = function (){
             for(var i=0,vi,len = videoObjs.length;i<len;i++){
                 vi = videoObjs[i];
                 cl = (type == 'upload' ? 'edui-upload-video video-js':'edui-faked-video');
-                html.push(creatInsertStr( vi.url, vi.width || 600,  vi.height || 400, id + i, null, vi.poster , vi.autoplay , cl, 'image'));
+                html.push(creatInsertStr( vi.url, vi.width || 600,  vi.height || 400, id + i, null, vi.poster, vi.autoplay, vi.loop, cl, 'image'));
             }
             me.execCommand("inserthtml",html.join(""),true);
             var rng = this.selection.getRange();
